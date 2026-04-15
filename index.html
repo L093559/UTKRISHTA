@@ -10,15 +10,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 :root{--blue:#0033A0;--red:#C8102E;--accent:#00A3E0;--green:#16A34A;--amber:#D97706;--muted:#6B7280;--card:#fff;--bg:#F0F4FA;--text:#1A1A2E}
 .screen{display:none;min-height:100vh}
 .screen.active{display:flex}
-
-/* === REGISTER === */
 #screen-register{background:linear-gradient(135deg,#0A1628 0%,#1A3A7A 50%,#C8102E 100%);align-items:center;justify-content:center;padding:20px;flex-direction:column}
 .reg-card{background:rgba(255,255,255,0.97);border-radius:22px;padding:36px 36px 28px;max-width:470px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.4)}
 .brand-title{font-size:21px;font-weight:900;color:var(--blue);text-align:center;letter-spacing:.5px;line-height:1.3;margin-bottom:5px}
 .brand-sub{font-size:12px;color:var(--muted);text-align:center;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px}
-.crown{font-size:44px;text-align:center;margin-bottom:10px;filter:drop-shadow(0 2px 8px rgba(200,16,46,.3))}
+.crown{font-size:44px;text-align:center;margin-bottom:10px}
 .field{margin-bottom:13px}
-.field label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px;letter-spacing:.3px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px}
 .field input,.field select{width:100%;padding:11px 13px;border:2px solid #E5E7EB;border-radius:9px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:var(--text);background:#fff}
 .field input:focus,.field select:focus{border-color:var(--blue)}
 .field select{cursor:pointer}
@@ -28,8 +26,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .btn-outline{width:100%;padding:10px;background:transparent;color:var(--muted);border:2px solid #E5E7EB;border-radius:11px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;transition:all .2s}
 .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
 .reg-footer{margin-top:16px;font-size:11px;color:#bbb;text-align:center}
-
-/* === QUIZ === */
 #screen-quiz{flex-direction:column;align-items:center;background:var(--bg);padding:14px}
 .quiz-wrap{width:100%;max-width:680px}
 .quiz-header{background:#fff;border-radius:14px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:10px}
@@ -64,8 +60,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .nav-dot.cur{background:var(--blue);border-color:var(--blue);color:#fff}
 .nav-dot.ans{background:#DCFCE7;border-color:var(--green);color:var(--green)}
 .timeout-banner{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:9px 14px;color:#DC2626;font-weight:600;font-size:13px;text-align:center;margin-bottom:12px;display:none}
-
-/* === RESULT === */
 #screen-result{background:linear-gradient(135deg,#0A1628 0%,#1A3A7A 50%,#C8102E 100%);align-items:center;justify-content:center;padding:24px}
 .result-card{background:#fff;border-radius:20px;padding:32px;max-width:520px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.4)}
 .result-emoji{font-size:56px;margin-bottom:12px}
@@ -85,13 +79,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .result-btns{display:flex;gap:10px}
 .btn-lb{flex:1;padding:12px;background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer}
 .btn-again{flex:1;padding:12px;background:#F3F4F6;color:var(--text);border:none;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer}
-
-/* === LEADERBOARD === */
 #screen-leaderboard{flex-direction:column;background:linear-gradient(135deg,#0A1628 0%,#1A3A7A 50%,#C8102E 100%);min-height:100vh;padding:20px;align-items:center}
 .lb-wrap{width:100%;max-width:740px}
 .lb-header{text-align:center;color:#fff;margin-bottom:18px}
 .lb-header .lb-crown{font-size:44px}
-.lb-header h1{font-size:26px;font-weight:900;margin:6px 0 3px;letter-spacing:.3px}
+.lb-header h1{font-size:26px;font-weight:900;margin:6px 0 3px}
 .lb-header p{opacity:.75;font-size:13px}
 .lb-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.4)}
 .lb-thead{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px 50px;padding:11px 18px;background:#F9FAFB;border-bottom:1px solid #E5E7EB;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
@@ -116,8 +108,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.6);margin-top:10px}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* === QR / ADMIN === */
 #screen-admin{flex-direction:column;background:linear-gradient(135deg,#0A1628,#1A3A7A);min-height:100vh;padding:24px;align-items:center;justify-content:center}
 .admin-card{background:#fff;border-radius:20px;padding:32px;max-width:500px;width:100%;box-shadow:0 25px 60px rgba(0,0,0,.4)}
 .admin-card h2{font-size:20px;font-weight:800;color:var(--blue);margin-bottom:18px;text-align:center}
@@ -128,45 +118,32 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .url-input-wrap button{padding:10px 14px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer}
 .setup-box{background:#F9FAFB;border-radius:10px;padding:14px;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6}
 .setup-box strong{color:var(--text)}
-.setup-box a{color:var(--blue);text-decoration:none;font-weight:600}
 .setup-box code{background:#E5E7EB;padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace}
-
 .lb-del{background:none;border:none;cursor:pointer;color:#E5E7EB;font-size:16px;padding:2px 6px;border-radius:6px;transition:color .15s,background .15s;text-align:center}
 .lb-del:hover{color:var(--red);background:#FEF2F2}
-/* score colors */
-.sc-high{color:var(--green)}
-.sc-mid{color:var(--amber)}
-.sc-low{color:var(--red)}
+.sc-high{color:var(--green)}.sc-mid{color:var(--amber)}.sc-low{color:var(--red)}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════
-     SCREEN 1 — REGISTER
-═══════════════════════════════════════════════ -->
 <div id="screen-register" class="screen active">
   <div class="reg-card">
-    <div class="crown">&#127775;</div>
+    <div class="crown">&#9733;</div>
     <div class="brand-title">UTKRISHTA</div>
     <div class="brand-sub">The Quality Carnival</div>
     <hr class="divider">
-
-    <!-- STEP 1: Team details -->
     <div class="field">
       <label>&#128101; Team Name</label>
       <input id="teamNameInp" type="text" placeholder="e.g. Team Vanguard" />
     </div>
-
     <div class="field">
       <label>&#128100; Member Names <span style="font-weight:400;color:var(--muted)">(comma-separated, 3 names)</span></label>
       <input id="memberNamesInp" type="text" placeholder="e.g. John Smith, Jane Doe, Bob Lee" oninput="parseMembers()" />
     </div>
-
     <div class="field">
       <label>&#129499; Member IDs <span style="font-weight:400;color:var(--muted)">(comma-separated, 3 IDs)</span></label>
       <input id="memberIdsInp" type="text" placeholder="e.g. LBB001, LBB002, LBB003" oninput="parseMembers()" />
     </div>
-
     <div class="field">
       <label>&#128336; Select Slot</label>
       <select id="slotSel">
@@ -176,9 +153,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
         <option value="Slot 3">Slot 3</option>
       </select>
     </div>
-
     <div id="parseHint" style="font-size:11px;color:var(--amber);margin-bottom:8px;display:none">&#9888; Enter exactly 3 names and 3 IDs separated by commas.</div>
-
     <button class="btn-primary" onclick="startQuiz()">&#128640; Start Quiz</button>
     <button class="btn-outline" onclick="showLeaderboard()">&#127942; View Leaderboard</button>
     <button class="btn-outline" onclick="showAdmin()" style="margin-top:6px;font-size:11px;padding:7px;color:#bbb;border-color:#eee">&#128247; QR Code &amp; Setup</button>
@@ -186,9 +161,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SCREEN 2 — QUIZ
-═══════════════════════════════════════════════ -->
 <div id="screen-quiz" class="screen">
   <div class="quiz-wrap">
     <div class="quiz-header">
@@ -203,7 +175,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
       <button class="btn-submit-top" onclick="confirmSubmit()">Submit</button>
     </div>
     <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-    <div id="timeoutBanner" class="timeout-banner">&#9200; Time&rsquo;s up! Your quiz has been submitted.</div>
+    <div id="timeoutBanner" class="timeout-banner">&#9200; Time is up! Your quiz has been submitted.</div>
     <div class="q-card">
       <div class="q-src" id="qSrc"></div>
       <div class="q-text" id="qText"></div>
@@ -220,9 +192,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SCREEN 3 — RESULT
-═══════════════════════════════════════════════ -->
 <div id="screen-result" class="screen">
   <div class="result-card">
     <div class="result-emoji" id="resEmoji"></div>
@@ -248,334 +217,250 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SCREEN 4 — LEADERBOARD
-═══════════════════════════════════════════════ -->
 <div id="screen-leaderboard" class="screen">
   <div class="lb-wrap">
     <div class="lb-header">
       <div class="lb-crown">&#127942;</div>
       <h1>UTKRISHTA Leaderboard</h1>
       <p>Sorted by Slot &mdash; fastest time within each slot</p>
-      <div class="sync-badge"><span class="sync-dot"></span> Live &mdash; updates every 10 seconds</div>
+      <div class="sync-badge"><span class="sync-dot"></span> Live &mdash; updates every 15 seconds</div>
     </div>
     <div class="lb-card">
       <div class="lb-thead">
-        <div>#</div><div>Team Name</div><div>Slot &#9650;</div><div>Score</div><div>Time &#9650;</div><div></div>
+        <div>#</div><div>Team Name</div><div>Slot</div><div>Score</div><div>Time</div><div></div>
       </div>
       <div id="lbBody"></div>
     </div>
     <div class="lb-bottom">
       <button class="btn-back" onclick="goReg()">&#8592; Back</button>
-      <button class="btn-refresh" onclick="loadLB();renderLB()">&#8635; Refresh</button>
+      <button class="btn-refresh" onclick="fetchAndRenderLB()">&#8635; Refresh</button>
       <button class="btn-clearall" onclick="clearAllLB()">&#128465; Clear All</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SCREEN 5 — ADMIN / QR
-═══════════════════════════════════════════════ -->
 <div id="screen-admin" class="screen">
   <div class="admin-card">
-    <h2>&#128247; QR Code &amp; Hosting Setup</h2>
+    <h2>&#128247; QR Code &amp; Setup</h2>
     <img id="qrImg" class="qr-img" src="" alt="QR Code" />
     <div class="url-input-wrap">
-      <input id="qrUrlInp" type="text" placeholder="Enter your hosted quiz URL here…" value="" />
+      <input id="qrUrlInp" type="text" placeholder="Your hosted quiz URL" />
       <button onclick="genQR()">Generate</button>
     </div>
-    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:4px">
-      Scan to open the quiz on any phone &mdash; no app or Claude account needed
-    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:4px">Scan to open on any phone &mdash; no app needed</div>
     <div class="setup-box">
       <strong>Step 1 &mdash; Create leaderboard.json in your repo</strong><br>
-      Go to your GitHub repo (UTKRISHTA) &rarr; click <strong>Add file &rarr; Create new file</strong> &rarr; name it <code>leaderboard.json</code> &rarr; paste this content: <code>{"leaderboard":[]}</code> &rarr; click <strong>Commit changes</strong>.<br><br>
-      <strong>Step 2 &mdash; Create a Personal Access Token (PAT)</strong><br>
-      On GitHub: click your <strong>profile picture</strong> (top right) &rarr; <strong>Settings</strong> &rarr; scroll to bottom &rarr; <strong>Developer settings</strong> &rarr; <strong>Personal access tokens &rarr; Tokens (classic)</strong> &rarr; <strong>Generate new token (classic)</strong> &rarr; give it a name like "quiz-token" &rarr; set expiry to <strong>90 days</strong> &rarr; tick <strong>public_repo</strong> checkbox &rarr; click <strong>Generate token</strong> &rarr; <strong>copy the token</strong> immediately (it won't show again).<br><br>
-      <strong>Step 3 &mdash; Paste into the quiz file</strong><br>
-      Open <code>index.html</code> on GitHub &rarr; click &#9999; Edit &rarr; search for <code>PASTE_GITHUB_USERNAME_HERE</code> and replace with your GitHub username (e.g. <code>1093559</code>) &rarr; replace <code>PASTE_REPO_NAME_HERE</code> with <code>UTKRISHTA</code> &rarr; replace <code>PASTE_GITHUB_PAT_HERE</code> with your token &rarr; Commit changes.<br><br>
-      &check; Done! Every phone that scans the QR shares the same live leaderboard &mdash; using your existing GitHub account, no new signup needed.
+      GitHub repo &rarr; Add file &rarr; Create new file &rarr; name: <code>leaderboard.json</code> &rarr; content: <code>{"leaderboard":[]}</code> &rarr; Commit.<br><br>
+      <strong>Step 2 &mdash; Create a Personal Access Token</strong><br>
+      GitHub &rarr; Profile picture &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic) &rarr; Generate new token (classic) &rarr; tick <strong>public_repo</strong> &rarr; Generate &rarr; copy token.<br><br>
+      <strong>Step 3 &mdash; Paste 3 values into index.html</strong><br>
+      Find <code>GH_OWNER</code>, <code>GH_REPO</code>, <code>GH_TOKEN</code> near top of script and replace the placeholder values. Keep the quotes. Commit &rarr; done!
     </div>
     <button class="btn-primary" onclick="goReg()" style="margin-top:16px">&#8592; Back to Quiz</button>
   </div>
 </div>
-
 <script>
-/* ═══════════════════════════════════════════
-   Parsed member data (filled at runtime)
-═══════════════════════════════════════════ */
-let parsedMembers = []; // [{name, id}, ...]
-
-/* ─── PARSE MEMBERS FROM COMMA-SEPARATED INPUTS ─── */
-function parseMembers(){
-  const names = document.getElementById('memberNamesInp').value.split(',').map(s=>s.trim()).filter(Boolean);
-  const ids   = document.getElementById('memberIdsInp').value.split(',').map(s=>s.trim()).filter(Boolean);
-  const hint  = document.getElementById('parseHint');
-
-  if(names.length === 3 && ids.length === 3){
-    parsedMembers = names.map((n,i)=>({name:n, id:ids[i]}));
-    hint.style.display = 'none';
-  } else if(names.length > 0 || ids.length > 0){
-    hint.style.display = 'block';
-    parsedMembers = [];
-  } else {
-    hint.style.display = 'none';
-    parsedMembers = [];
-  }
-}
-
-function onMemberChange(){}
-
+/* ── CONFIG ── */
+const GH_OWNER = "L093559";
+const GH_REPO  = "PASTE_REPO_NAME_HERE";
+const GH_TOKEN = "UTKRISHTA";
+const GH_FILE  = "leaderboard.json";
+const GH_READY = GH_TOKEN !== "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";
+const GH_API   = "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE;
+const GH_HEADS = {"Authorization":"token "+GH_TOKEN,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"};
+const STORAGE_KEY = "utkrishta_lb_v3";
 const TOTAL_SECS = 180;
 const Q_COUNT = 15;
-const STORAGE_KEY = "utkrishta_leaderboard_v2";
 
-/* =======================================================
-   GITHUB LEADERBOARD SETUP
-   Uses your existing GitHub repo - no new signup needed!
-======================================================= */
-const GH_OWNER  = "L093559";   // e.g. "1093559"
-const GH_REPO   = "UTKRISHTA";         // e.g. "UTKRISHTA"
-const GH_TOKEN  = "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";        // Personal Access Token
-const GH_FILE   = "leaderboard.json";
-const GH_READY  = GH_TOKEN !== "PASTE_GITHUB_PAT_HERE";
-const GH_API    = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_FILE;
-const GH_HEADS  = { "Authorization": "token " + GH_TOKEN, "Content-Type": "application/json", "Accept": "application/vnd.github.v3+json" };
+/* ── STATE ── */
+let parsedMembers=[], regData={}, questions=[], current=0, answers={};
+let timerSec=TOTAL_SECS, timerInt=null, startTime=null, submitted=false;
+let lbData=[], lbPollInt=null, ghFileSha=null;
 
-/* ─── QUESTION BANK ─── */
-const ALL_Q = [
-  {s:"CDS / SDNA",q:"Who is responsible for initiating the Data Management Plan (DMP)?",o:["CRA","CDA","Sponsor Medical Monitor","Trial Manager"],a:1},
-  {s:"CDS / SDNA",q:"When must the DMP be approved relative to trial start?",o:["Within 30 days of first patient visit","At database lock","Before data collection begins, prior to First Patient Visit","After trial enrollment is complete"],a:2},
-  {s:"CDS / SDNA",q:"True or False: The DMP author can also be the approver of the DMP.",o:["True","False — the approver must not be the author","Only if the study is small","Only for outsourced trials"],a:1},
-  {s:"CDS / SDNA",q:"What must be confirmed when verifying a data transfer?",o:["File was zipped and password protected","Data transferred and a reconciliation report was generated","Data was transferred per the plan AND stored in appropriate locations per blinding requirements","Data transferred and eTMF filing was completed"],a:2},
-  {s:"CDS / SDNA",q:"What happens if a data transfer does not comply with the data transfer plan?",o:["Transfer is automatically re-run","CRA is notified only","Deviation must be documented and the issue investigated and resolved","Trial is paused immediately"],a:2},
-  {s:"CDS / SDNA",q:"What is the key criterion for deciding if a database unlock is justified?",o:["Any data entry error found post-lock","Data entry error for one of the critical data","A CRO audit finding requires it","The data error must significantly impact the reliability of the results"],a:3},
-  {s:"CDS / SDNA",q:"The reconciliation requirement for adverse event terms between Argus Safety and the clinical trial database:",o:["Verbatim terms must match exactly across both databases","Only MedDRA SOC-level terms need to be consistent","Verbatim terms may differ if they map to the same MedDRA PT","MedDRA coding is reconciled only at database lock"],a:2},
-  {s:"CDS / SDNA",q:"Who leads the study team to determine whether a database unlock is needed after database lock?",o:["Biostatistics Lead","Medical Monitor","Regulatory Affairs","CDA"],a:3},
-
-  {s:"Data & Analytics",q:"What is the primary purpose of the SORT (SBP Observation Reporting Tool)?",o:["Automating CDB test case creation and listings review","Copying study data checks into study-specific applications","Reviewing the Data Verification Plan, Dynamics Specifications, and CRF content against the Study SDS","Comparing Veeva study design items with DED standards"],a:2},
-  {s:"Data & Analytics",q:"What is the primary purpose of SMILe (Study Management Insights and Learning)?",o:["Replacing clinical databases like EDC","Delivering near real-time, actionable insights at study and site levels","Performing final statistical analysis after database lock","Managing site payments and contracts"],a:1},
-  {s:"Data & Analytics",q:"What is the correct MedDRA hierarchy from top to bottom?",o:["LLT → PT → HLT → SOC","SOC → HLT → PT → LLT","PT → SOC → LLT → HLT","HLT → SOC → PT → LLT"],a:1},
-  {s:"Data & Analytics",q:"In oncology trials, why is imaging reconciliation a critical step?",o:["To monitor site payments","To match drug supply with demand","To ensure scans are complete, consistent, and evaluable","To track consent documentation"],a:2},
-  {s:"Data & Analytics",q:"What is the primary purpose of a RECIST report?",o:["Monitoring adverse events","Reconciling lab results","Evaluating tumour response to treatment","Tracking recruitment"],a:2},
-  {s:"Data & Analytics",q:"Which dashboard tracks DMP Base PI signature status?",o:["eCOA","DIVA","CPT","HEPATIC"],a:2},
-  {s:"Data & Analytics",q:"Which tool helps the study team monitor dosing compliance and catch risks before they escalate?",o:["CDB Validation Automation Tool","SORT (SBP Observation Reporting Tool)","SMILe (Study Management Insights and Learning)","eCOA Dosing RBM Dashboard"],a:3},
-
-  {s:"eCOA",q:"What does eCOA stand for?",o:["Electronic Compliance and Outcome Audit","Electronic Clinical Outcome Assessment","Electronic Clinical Operations Analysis","Electronic Controlled Output Assessment"],a:1},
-  {s:"eCOA",q:"What is the correct order of key steps in the standard eCOA study build process?",o:["UAT → Licensing → Build → Deployment","Build → Licensing → UAT → Deployment","Licensing → Build → UAT → IRB/EC Submission → Deployment","IRB/EC Submission → UAT → Licensing → Build"],a:2},
-  {s:"eCOA",q:"What must be confirmed BEFORE any eCOA build activity begins?",o:["The EDC system is already deployed","All patients have been enrolled","The COA instrument is validated and the required license is in place","The UAT scripts have been finalised"],a:2},
-  {s:"eCOA",q:"What must be documented in an eCOA audit trail whenever a data change is made?",o:["Only the date of the change","The change made, the reason for the change, and who made it","Only the site number and patient ID","Only the eCOA vendor's approval"],a:1},
-  {s:"eCOA",q:"According to ICH E6(R2), who holds ultimate responsibility for the quality and integrity of clinical trial data?",o:["The eCOA vendor","The CRO","The Sponsor","The clinical site investigator"],a:2},
-  {s:"eCOA",q:"What should be in place if an eCOA device fails or is lost?",o:["The patient is withdrawn from the study","A defined paper backup process or electronic backup option documented in the DMP","The site coordinator should re-enter data from memory","The UAT must be repeated"],a:1},
-  {s:"eCOA",q:"Which of the following best describes Atom5™?",o:["A paper-based COA digitisation tool","A disease and language-agnostic clinical trial platform supporting hybrid and decentralised trials","An EDC-only system for site data entry","A laboratory data management system"],a:1},
-  {s:"eCOA",q:"In how many countries and languages is Atom5™ available?",o:["50 countries and 30 languages","100 countries and 75 languages","193 countries and 125 languages","75 countries and 50 languages"],a:2},
-
-  {s:"GMQO",q:"What is a 'deviation' as defined under Lilly's Quality Deviation Management system?",o:["Any error found during data cleaning","A departure from approved processes, procedures, specifications, GxP or regulatory requirements","A planned change to a clinical database design after go-live","A protocol amendment submitted to a regulatory authority"],a:1},
-  {s:"GMQO",q:"Within how many business days of discovering a deviation must a deviation record be created in the GDD?",o:["Same calendar day","3 business days","1 business day","5 business days"],a:2},
-  {s:"GMQO",q:"The risk assessment used to classify a deviation uses which three elements?",o:["Severity, Detectability, Occurrence","Severity, Probability, Impact","Likelihood, Consequence, Controllability","Frequency, Duration, Exposure"],a:0},
-  {s:"GMQO",q:"What is the purpose of an Effectiveness Check (EC) in the deviation management process?",o:["To verify that the CAPA was submitted on time","To verify that the CAPA successfully eliminated the root cause and prevented recurrence","To confirm the deviation record was reviewed by Quality before closure","To check whether similar deviations exist in other sites"],a:1},
-  {s:"GMQO",q:"When providing company documents to an alliance partner auditor, copies must be marked as:",o:['"For Internal Use Only"','"Draft - Not for Distribution"','"Confidential"','"Proprietary - Restricted Access"'],a:2},
-  {s:"GMQO",q:"What is the default response timeline for regulatory agency inspection responses if no timeline is provided?",o:["10 business days","30 business days","20 business days","15 business days"],a:3},
-  {s:"GMQO",q:"Can an Inspector take original documents off-site?",o:["Yes, if a formal written request is made","Yes, but only with legal approval","Yes, but only for GCP-related documents","No — an Inspector must not be permitted to take original documents off-site under any circumstances"],a:3},
-  {s:"GMQO",q:"What is a 'for cause' inspection?",o:["A routine periodic inspection scheduled annually","An inspection triggered by a specific concern, issue, or compliance signal","An inspection conducted only for new product approvals","An internal self-inspection performed by the company"],a:1},
-
-  {s:"SA Programming",q:"From a quality perspective, why are SA Programming SOPs critical?",o:["To improve coding speed","To ensure consistency, compliance, and audit readiness","To allow flexibility in individual coding styles","To reduce documentation requirements"],a:1},
-  {s:"SA Programming",q:"Under the Single-Use Code (SUC) SOP, the validation approach is determined by:",o:["Complexity of the program","Experience of the programmer","Purpose of the code and intended use of results","Number of outputs generated"],a:2},
-  {s:"SA Programming",q:"What is the primary risk of using outdated or copied specifications?",o:["Slower execution","Inconsistent derivations and potential deviations","Increased documentation","Reduced flexibility"],a:1},
-  {s:"SA Programming",q:"What is the program type for SDTM and ADaM?",o:["Results Generation","Results Display","Dual Purpose (Results Generation and Results Display)","None of the above"],a:0},
-  {s:"SA Programming",q:"What is the validation approach for SDTM and ADaM?",o:["Peer Review","Independent Replication","Independent Replication and/or Peer Review","No validation required"],a:1},
-  {s:"SA Programming",q:"When should deviations be raised from an SOP and quality perspective?",o:["Only during audits","Only if timelines are impacted","When SOP or validation expectations are not met","Only for major issues"],a:2},
-
-  {s:"Data Standards",q:"CDISC controlled terminologies are aligned with which organisation/agency?",o:["FDA","WHO","NCI","EMA"],a:2},
-  {s:"Data Standards",q:"Which CDISC standard is used for data collection?",o:["SDTM","ADaM","CDASH","ODM"],a:2},
-  {s:"Data Standards",q:"Which tool facilitates storage, creation, and maintenance of Lilly's clinical metadata standards?",o:["ARDS","STAMP","CMDR","DVS"],a:1},
-  {s:"Data Standards",q:"What does the acronym DED stand for?",o:["Data Exchange Definition","Data Element Definition","Data Encryption Document","Data Evaluation Design"],a:1},
-  {s:"Data Standards",q:"What does the acronym DVS stand for?",o:["Data Visualization Specification","Data Validation Specification","Data Verification Standard","Data Variable Source"],a:1},
-  {s:"Data Standards",q:"In which year did Lilly start Clinical Trial Data Transparency?",o:["2010","2012","2014","2016"],a:2},
-  {s:"Data Standards",q:"What is the primary purpose of ODM?",o:["Data analysis","Data visualization","Data exchange","Data anonymization"],a:2},
-  {s:"Data Standards",q:"What does the acronym CMDR stand for?",o:["Clinical Master Data Repository","Central Metadata Data Registry","Clinical Metadata Repository","Clinical Model Documentation Record"],a:2},
-
-  {s:"Study Build SOP",q:"According to Study Build SOP, who evaluates the need for User Acceptance Testing?",o:["Study Build Programmer","eCOA Programmer","Clinical Data Representative","Both A and C"],a:2},
-  {s:"Study Build SOP",q:"Per Study Build SOP, CRF Instruction Guidelines need to be finalised by when?",o:["At the time of design approval","At the time of testing completion","Prior to EDC Go-live","Prior to data collection (FPV)"],a:3},
-  {s:"Study Build SOP",q:"As per Study Build SOP, observation studies are not part of the procedure — True or False?",o:["True","False","Only for Phase I trials","Only for Phase III trials"],a:0},
-  {s:"Study Build SOP",q:"As per Study Build SOP, which process flow step is correct?",o:["Testing > CRF Agreement > UAT > Design Approval","Testing > Design Approval > UAT > CRF Agreement","CRF Agreement > Testing > Design Approval > UAT","CRF Agreement > UAT > Testing > Design Approval"],a:2},
-  {s:"Study Build SOP",q:"Which is NOT part of Study Build SOP scope?",o:["Design Approval","User Acceptance Testing","Managing Users and Privileges","Dynamic Specifications"],a:2},
-
-  {s:"Statistics SOPs",q:"For which trials is a standalone Blinding and Unblinding Plan (BUP) required?",o:["Phase I only","Phase II through IV only","Phase III only","Only registration trials"],a:1},
-  {s:"Statistics SOPs",q:"When must the BUP approval occur?",o:["After FPV","Before database lock","Prior to FPV","Only before final analysis"],a:2},
-  {s:"Statistics SOPs",q:"The SAP is described as what relative to the protocol?",o:["A replacement for the protocol","An extension of the protocol with additional analysis details","A data management document","A committee charter"],a:1},
-  {s:"Statistics SOPs",q:"For blinded trials, SAP approval must occur:",o:["After FPV","Prior to planned unblinding","After interim analysis","Only after DBL"],a:1},
-  {s:"Statistics SOPs",q:"Which statement best matches the SOP's definition of a DMC (Data Monitoring Committee)?",o:["Primarily Lilly members from the study team","Fully independent and unbiased members external to Lilly","Any steering committee","A committee only for devices"],a:1},
-  {s:"Statistics SOPs",q:"What tool is initiated alongside creating the BUP?",o:["Decision Log","Blinding or Unblinding Log of Key Study Team Personnel","Protocol Change Form","DTA (Data Transfer Agreement)"],a:1},
-
-  {s:"DDII Bioinformatics",q:"When integrating multi-omics datasets, which step is most critical before any downstream analysis?",o:["Perform differential expression analysis","Harmonize and normalize data across batches and platforms","Run pathway enrichment immediately on raw counts","Filter to protein-coding genes only"],a:1},
-  {s:"DDII Bioinformatics",q:"What is the conventional genome-wide significance threshold used in GWAS?",o:["P < 0.05; standard statistical threshold","P < 5 × 10⁻⁸; Bonferroni correction for ~1 million independent tests","P < 0.001; conservative cutoff","P < 0.01; officially defined by GWAS consortia"],a:1},
-  {s:"DDII Bioinformatics",q:"What is the primary advantage of Mendelian Randomization over standard observational studies?",o:["It uses larger sample sizes","It leverages genetic variants as natural instruments to infer causal relationships, reducing confounding","It eliminates the need for biobank data","It only requires transcriptomic data"],a:1},
-  {s:"DDII Bioinformatics",q:"A known bias in protein-protein interaction (PPI) networks that must be accounted for is:",o:["Highly studied proteins have disproportionately more reported interactions due to literature bias","Network hubs are always the best drug targets","PPI data is only available for mouse proteins","Interaction networks cannot be used with GWAS data"],a:0},
-
-  {s:"DDII – AAAC / NMA",q:"What does AAAC stand for?",o:["Automated Analysis and Clinical Compliance","Advanced Algorithms for Analytical Computing","Associated Agencies for Accreditation and Certification","Advanced Analytics and Access Capabilities"],a:3},
-  {s:"DDII – AAAC / NMA",q:"What does NMA stand for?",o:["Network Meta-Analysis","National Medical Association","Non-inferiority Margin Assessment","Normalized Mean Adjustment"],a:0},
-  {s:"DDII – AAAC / NMA",q:"What does MAIC stand for?",o:["Meta-Analysis of Individual Cases","Maximum Achievable Incremental Cost","Matching-Adjusted Indirect Comparison","Multiple Analysis of Independent Cohorts"],a:2},
-  {s:"DDII – AAAC / NMA",q:"Which of the following is a well-known HTA body in the UK?",o:["EMA","TGA","NICE (National Institute for Health and Care Excellence)","FDA"],a:2},
-  {s:"DDII – AAAC / NMA",q:"On which two fundamental bases are treatments compared in an NMA for HTA submissions?",o:["Efficacy and safety","Cost and manufacturing complexity","Study duration and sample size","Patient age and gender distribution"],a:0},
-  {s:"DDII – AAAC / NMA",q:"Why do HTA bodies require indirect treatment comparisons (ITC)?",o:["To satisfy journal publication requirements","To replace Phase 3 trials","To increase the sample size of individual trials","Head-to-head trials between all comparators rarely exist, and payers need relative efficacy evidence"],a:3},
-
-  {s:"DDII – DHAI",q:"What does DHAI stand for?",o:["Digital Health AI Infrastructure","Data Hub for Analytical Integration","Design Hub Analytics Initiatives","Drug Health Assessment Index"],a:2},
-  {s:"DDII – DHAI",q:"What does SOA stand for in the context of clinical trials?",o:["Standard Operating Agreement","Summary of Analysis","Statement of Approval","Schedule of Activities"],a:3},
-  {s:"DDII – DHAI",q:"What does 'IE' stand for in clinical trial review?",o:["Internal Evaluation","Inclusion/Exclusion","Interim Efficacy","Investigator Endorsement"],a:1},
-  {s:"DDII – DHAI",q:"What key impact has the Digital SOA product achieved?",o:["Increased clinical trial duration by 50%","40% remote visits, streamlined visits by 25%, reduced procedures by 33%, avoided $30M in trial grant costs","Doubled the number of study sites required","Eliminated the need for informed consent"],a:1},
-
-  {s:"DDII – R & Shiny",q:"What is R Shiny?",o:["A data storage tool","An interactive web application framework for R","A machine learning library","A database management system"],a:1},
-  {s:"DDII – R & Shiny",q:"What are the two main components of a Shiny application?",o:["Input and Output","UI and Server","Frontend and Database","Client and API"],a:1},
-  {s:"DDII – R & Shiny",q:"What is reactive() used for in R Shiny?",o:["To style the UI","To connect to a database","To create reactive expressions that update automatically","To deploy the application"],a:2},
-  {s:"DDII – R & Shiny",q:"What is the full form of CRAN in R?",o:["Central Repository for Analytical Networks","Comprehensive R Archive Network","Common R Application Node","Central R Analysis Network"],a:1},
-  {s:"DDII – R & Shiny",q:"Which platform is commonly used to host and deploy R Shiny applications in organisations?",o:["GitHub Pages","Netlify","Posit Connect","Heroku"],a:2},
-
-  {s:"DDII – CI",q:"What does 'CI' stand for in the pharmaceutical industry context?",o:["Clinical Intelligence","Corporate Intelligence","Competitive Intelligence","Commercial Intelligence"],a:2},
-  {s:"DDII – CI",q:"Which sequence correctly describes Lilly's CI workflow?",o:["Analysis → Collection → Insights → Scope → Dissemination","Scope → Data Collection → Organize & Transform → Analysis → Insights → Inform Decision/Strategy","Data Collection → Scope → Analysis → Transform → Insights → Communicate","Scope → Analysis → Data Collection → Organize → Disseminate"],a:1},
-  {s:"DDII – CI",q:"Which CI activity involves monitoring abstracts, presentations, and late-breakers at scientific congresses?",o:["Patent Analysis","Ad hoc Requests","Conference Coverage","Target & Disease Landscapes"],a:2},
-  {s:"DDII – CI",q:"Which of the following would be considered a breach of CI ethics?",o:["Using ClinicalTrials.gov to track a competitor's Phase 3 enrollment","Attending a public medical conference and summarising competitor presentations","Reviewing a competitor's investor relations website for pipeline disclosures","Calling a competitor employee under a false pretext to elicit confidential pipeline information"],a:3},
-  {s:"DDII – CI",q:"Why is triangulation of sources an important best practice in CI?",o:["It is a mathematical modeling technique used to forecast competitor drug sales","It helps balance workload evenly across CI team members","It is a formatting requirement for landscape Excel deliverables","It validates findings by cross-referencing multiple independent sources to improve accuracy and confidence"],a:3},
-
-  {s:"DDII – BI",q:"What does 'In-licensing' mean in the context of pharma Business Development?",o:["Selling proprietary technology to a competitor","Acquiring rights to use another company's drug, technology, or IP in exchange for payments","Filing patents in multiple countries simultaneously","Transferring an asset to a generic manufacturer"],a:1},
-  {s:"DDII – BI",q:"What does 'technical diligence' primarily assess in a BD context?",o:["The commercial forecast and revenue projections of a target asset","The scientific validity, manufacturing feasibility, and development risk of a drug candidate","The legal status of trademark registrations","The pricing strategy recommended by market access teams"],a:1},
-  {s:"DDII – BI",q:"What is the main objective of the Catalyze360 team?",o:["To manufacture drugs for global distribution","To identify, evaluate, invest in, and nurture external innovations","To conduct clinical trials for Lilly's internal molecules","To manage post-marketing safety surveillance"],a:1},
-  {s:"DDII – BI",q:"Which functions are part of the Catalyze360 group?",o:["Lilly Diagnostics, Lilly Digital, Lilly Analytics","Lilly Clinical, Lilly Regulatory, Lilly Safety","Lilly Ventures Capital, Lilly ExploR&D, Lilly Gateway Labs, Tune Labs","Lilly Manufacturing, Lilly Supply Chain, Lilly Commercial"],a:2},
-  {s:"DDII – BI",q:"What does 'exclusivity' mean in a pharma licensing deal?",o:["The right to charge a premium price for a drug in a specific market","A clause that prevents the licensor from signing the same deal with any other company in the agreed territory or field","The period during which a drug cannot be reviewed by regulators","A restriction preventing the licensee from hiring the licensor's employees"],a:1},
-  {s:"DDII – BI",q:"When was the BI team started?",o:["January 2023","October 2024","May 2024","March 2022"],a:2}
-];
-
-/* ─── STATE ─── */
-let regData={}, questions=[], current=0, answers={}, timerSec=TOTAL_SECS;
-let timerInt=null, startTime=null, submitted=false;
-let lbData=[], lbPoll=null;
-
-/* ─── UTILS ─── */
-function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+/* ── UTILS ── */
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function fmt(s){const m=Math.floor(s/60);const sc=s%60;return m+':'+(sc<10?'0':'')+sc;}
+function fmt(s){const m=Math.floor(s/60),sc=s%60;return m+':'+(sc<10?'0':'')+sc;}
+function sortLBData(){lbData.sort((a,b)=>{const sa=parseInt((a.slot||'').replace(/\D/g,''))||0,sb=parseInt((b.slot||'').replace(/\D/g,''))||0;return sa!==sb?sa-sb:a.timeTaken-b.timeTaken;});}
 
-/* ─── QUESTION PICKER — guaranteed variety ─── */
+/* ── PARSE MEMBERS ── */
+function parseMembers(){
+  const names=document.getElementById('memberNamesInp').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const ids=document.getElementById('memberIdsInp').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const hint=document.getElementById('parseHint');
+  if(names.length===3&&ids.length===3){parsedMembers=names.map((n,i)=>({name:n,id:ids[i]}));hint.style.display='none';}
+  else if(names.length>0||ids.length>0){hint.style.display='block';parsedMembers=[];}
+  else{hint.style.display='none';parsedMembers=[];}
+}
+
+const ALL_Q = [
+  {s:"CDS / SDNA",q:"Who is responsible for initiating the Data Management Plan (DMP)?",o:["CRA", "CDA", "Sponsor Medical Monitor", "Trial Manager"],a:1},
+  {s:"CDS / SDNA",q:"When must the DMP be approved relative to trial start?",o:["Within 30 days of first patient visit", "At database lock", "Before data collection begins, prior to First Patient Visit", "After trial enrollment is complete"],a:2},
+  {s:"CDS / SDNA",q:"True or False: The DMP author can also be the approver of the DMP.",o:["True", "False - the approver must not be the author", "Only if the study is small", "Only for outsourced trials"],a:1},
+  {s:"CDS / SDNA",q:"What must be confirmed when verifying a data transfer?",o:["File was zipped and password protected", "Data transferred and a reconciliation report generated", "Data was transferred per plan AND stored in appropriate locations per blinding requirements", "Data transferred and eTMF filing completed"],a:2},
+  {s:"CDS / SDNA",q:"What happens if a data transfer does not comply with the data transfer plan?",o:["Transfer is automatically re-run", "CRA is notified only", "Deviation must be documented and the issue investigated and resolved", "Trial is paused immediately"],a:2},
+  {s:"CDS / SDNA",q:"What is the key criterion for deciding if a database unlock is justified?",o:["Any data entry error found post-lock", "Data entry error for one of the critical data", "A CRO audit finding requires it", "The data error must significantly impact the reliability of the results"],a:3},
+  {s:"CDS / SDNA",q:"Verbatim AE terms between Argus Safety and the clinical trial database:",o:["Verbatim terms must match exactly", "Only MedDRA SOC-level terms need to be consistent", "Verbatim terms may differ if they map to the same MedDRA PT", "MedDRA coding is reconciled only at database lock"],a:2},
+  {s:"CDS / SDNA",q:"Who leads the study team to determine whether a database unlock is needed after database lock?",o:["Biostatistics Lead", "Medical Monitor", "Regulatory Affairs", "CDA"],a:3},
+  {s:"Data & Analytics",q:"What is the primary purpose of the SORT (SBP Observation Reporting Tool)?",o:["Automating CDB test case creation", "Copying study data checks", "Reviewing the Data Verification Plan, Dynamics Specifications, and CRF content against the Study SDS", "Comparing Veeva study design items with DED standards"],a:2},
+  {s:"Data & Analytics",q:"What is the primary purpose of SMILe (Study Management Insights and Learning)?",o:["Replacing clinical databases like EDC", "Delivering near real-time, actionable insights at study and site levels", "Performing final statistical analysis after database lock", "Managing site payments"],a:1},
+  {s:"Data & Analytics",q:"What is the correct MedDRA hierarchy from top to bottom?",o:["LLT to PT to HLT to SOC", "SOC to HLT to PT to LLT", "PT to SOC to LLT to HLT", "HLT to SOC to PT to LLT"],a:1},
+  {s:"Data & Analytics",q:"In oncology trials, why is imaging reconciliation a critical step?",o:["To monitor site payments", "To match drug supply with demand", "To ensure scans are complete, consistent, and evaluable", "To track consent documentation"],a:2},
+  {s:"Data & Analytics",q:"What is the primary purpose of a RECIST report?",o:["Monitoring adverse events", "Reconciling lab results", "Evaluating tumour response to treatment", "Tracking recruitment"],a:2},
+  {s:"Data & Analytics",q:"Which dashboard tracks DMP Base PI signature status?",o:["eCOA", "DIVA", "CPT", "HEPATIC"],a:2},
+  {s:"Data & Analytics",q:"Which tool helps the study team monitor dosing compliance and catch risks before they escalate?",o:["CDB Validation Automation Tool", "SORT", "SMILe", "eCOA Dosing RBM Dashboard"],a:3},
+  {s:"eCOA",q:"What does eCOA stand for?",o:["Electronic Compliance and Outcome Audit", "Electronic Clinical Outcome Assessment", "Electronic Clinical Operations Analysis", "Electronic Controlled Output Assessment"],a:1},
+  {s:"eCOA",q:"What is the correct order of key steps in the standard eCOA study build process?",o:["UAT to Licensing to Build to Deployment", "Build to Licensing to UAT to Deployment", "Licensing to Build to UAT to IRB/EC Submission to Deployment", "IRB/EC Submission to UAT to Licensing to Build"],a:2},
+  {s:"eCOA",q:"What must be confirmed BEFORE any eCOA build activity begins?",o:["The EDC system is already deployed", "All patients have been enrolled", "The COA instrument is validated and the required license is in place", "The UAT scripts have been finalised"],a:2},
+  {s:"eCOA",q:"What must be documented in an eCOA audit trail whenever a data change is made?",o:["Only the date of the change", "The change made, the reason for the change, and who made it", "Only the site number and patient ID", "Only the eCOA vendor approval"],a:1},
+  {s:"eCOA",q:"According to ICH E6(R2), who holds ultimate responsibility for the quality and integrity of clinical trial data?",o:["The eCOA vendor", "The CRO", "The Sponsor", "The clinical site investigator"],a:2},
+  {s:"eCOA",q:"What should be in place if an eCOA device fails or is lost?",o:["The patient is withdrawn from the study", "A defined paper backup process or electronic backup option documented in the DMP", "The site coordinator should re-enter data from memory", "The UAT must be repeated"],a:1},
+  {s:"eCOA",q:"Which of the following best describes Atom5?",o:["A paper-based COA digitisation tool", "A disease and language-agnostic clinical trial platform supporting hybrid and decentralised trials", "An EDC-only system for site data entry", "A laboratory data management system"],a:1},
+  {s:"eCOA",q:"In how many countries and languages is Atom5 available?",o:["50 countries and 30 languages", "100 countries and 75 languages", "193 countries and 125 languages", "75 countries and 50 languages"],a:2},
+  {s:"GMQO",q:"What is a deviation as defined under Lilly Quality Deviation Management system?",o:["Any error found during data cleaning", "A departure from approved processes, procedures, specifications, GxP or regulatory requirements", "A planned change to a clinical database design after go-live", "A protocol amendment submitted to a regulatory authority"],a:1},
+  {s:"GMQO",q:"Within how many business days of discovering a deviation must a deviation record be created in the GDD?",o:["Same calendar day", "3 business days", "1 business day", "5 business days"],a:2},
+  {s:"GMQO",q:"The risk assessment used to classify a deviation uses which three elements?",o:["Severity, Detectability, Occurrence", "Severity, Probability, Impact", "Likelihood, Consequence, Controllability", "Frequency, Duration, Exposure"],a:0},
+  {s:"GMQO",q:"What is the purpose of an Effectiveness Check (EC) in the deviation management process?",o:["To verify that the CAPA was submitted on time", "To verify that the CAPA successfully eliminated the root cause and prevented recurrence", "To confirm the deviation record was reviewed by Quality before closure", "To check whether similar deviations exist in other sites"],a:1},
+  {s:"GMQO",q:"When providing company documents to an alliance partner auditor, copies must be marked as:",o:["For Internal Use Only", "Draft - Not for Distribution", "Confidential", "Proprietary - Restricted Access"],a:2},
+  {s:"GMQO",q:"What is the default response timeline for regulatory agency inspection responses if no timeline is provided?",o:["10 business days", "30 business days", "20 business days", "15 business days"],a:3},
+  {s:"GMQO",q:"Can an Inspector take original documents off-site?",o:["Yes, if a formal written request is made", "Yes, but only with legal approval", "Yes, but only for GCP-related documents", "No - an Inspector must not be permitted to take original documents off-site under any circumstances"],a:3},
+  {s:"GMQO",q:"What is a for cause inspection?",o:["A routine periodic inspection scheduled annually", "An inspection triggered by a specific concern, issue, or compliance signal", "An inspection conducted only for new product approvals", "An internal self-inspection performed by the company"],a:1},
+  {s:"SA Programming",q:"From a quality perspective, why are SA Programming SOPs critical?",o:["To improve coding speed", "To ensure consistency, compliance, and audit readiness", "To allow flexibility in individual coding styles", "To reduce documentation requirements"],a:1},
+  {s:"SA Programming",q:"Under the Single-Use Code (SUC) SOP, the validation approach is determined by:",o:["Complexity of the program", "Experience of the programmer", "Purpose of the code and intended use of results", "Number of outputs generated"],a:2},
+  {s:"SA Programming",q:"What is the primary risk of using outdated or copied specifications?",o:["Slower execution", "Inconsistent derivations and potential deviations", "Increased documentation", "Reduced flexibility"],a:1},
+  {s:"SA Programming",q:"What is the program type for SDTM and ADaM?",o:["Results Generation", "Results Display", "Dual Purpose (Results Generation and Results Display)", "None of the above"],a:0},
+  {s:"SA Programming",q:"What is the validation approach for SDTM and ADaM?",o:["Peer Review", "Independent Replication", "Independent Replication and/or Peer Review", "No validation required"],a:1},
+  {s:"SA Programming",q:"When should deviations be raised from an SOP and quality perspective?",o:["Only during audits", "Only if timelines are impacted", "When SOP or validation expectations are not met", "Only for major issues"],a:2},
+  {s:"Data Standards",q:"CDISC controlled terminologies are aligned with which organisation/agency?",o:["FDA", "WHO", "NCI", "EMA"],a:2},
+  {s:"Data Standards",q:"Which CDISC standard is used for data collection?",o:["SDTM", "ADaM", "CDASH", "ODM"],a:2},
+  {s:"Data Standards",q:"Which tool facilitates storage, creation, and maintenance of Lilly clinical metadata standards?",o:["ARDS", "STAMP", "CMDR", "DVS"],a:1},
+  {s:"Data Standards",q:"What does the acronym DED stand for?",o:["Data Exchange Definition", "Data Element Definition", "Data Encryption Document", "Data Evaluation Design"],a:1},
+  {s:"Data Standards",q:"What does the acronym DVS stand for?",o:["Data Visualization Specification", "Data Validation Specification", "Data Verification Standard", "Data Variable Source"],a:1},
+  {s:"Data Standards",q:"In which year did Lilly start Clinical Trial Data Transparency?",o:["2010", "2012", "2014", "2016"],a:2},
+  {s:"Data Standards",q:"What is the primary purpose of ODM?",o:["Data analysis", "Data visualization", "Data exchange", "Data anonymization"],a:2},
+  {s:"Data Standards",q:"What does the acronym CMDR stand for?",o:["Clinical Master Data Repository", "Central Metadata Data Registry", "Clinical Metadata Repository", "Clinical Model Documentation Record"],a:2},
+  {s:"Study Build SOP",q:"According to Study Build SOP, who evaluates the need for User Acceptance Testing?",o:["Study Build Programmer", "eCOA Programmer", "Clinical Data Representative", "Both A and C"],a:2},
+  {s:"Study Build SOP",q:"Per Study Build SOP, CRF Instruction Guidelines need to be finalised by when?",o:["At the time of design approval", "At the time of testing completion", "Prior to EDC Go-live", "Prior to data collection (FPV)"],a:3},
+  {s:"Study Build SOP",q:"As per Study Build SOP, observation studies are not part of the procedure - True or False?",o:["True", "False", "Only for Phase I trials", "Only for Phase III trials"],a:0},
+  {s:"Study Build SOP",q:"As per Study Build SOP, which process flow step is correct?",o:["Testing > CRF Agreement > UAT > Design Approval", "Testing > Design Approval > UAT > CRF Agreement", "CRF Agreement > Testing > Design Approval > UAT", "CRF Agreement > UAT > Testing > Design Approval"],a:2},
+  {s:"Study Build SOP",q:"Which is NOT part of Study Build SOP scope?",o:["Design Approval", "User Acceptance Testing", "Managing Users and Privileges", "Dynamic Specifications"],a:2},
+  {s:"Statistics SOPs",q:"For which trials is a standalone Blinding and Unblinding Plan (BUP) required?",o:["Phase I only", "Phase II through IV only", "Phase III only", "Only registration trials"],a:1},
+  {s:"Statistics SOPs",q:"When must the BUP approval occur?",o:["After FPV", "Before database lock", "Prior to FPV", "Only before final analysis"],a:2},
+  {s:"Statistics SOPs",q:"The SAP is described as what relative to the protocol?",o:["A replacement for the protocol", "An extension of the protocol with additional analysis details", "A data management document", "A committee charter"],a:1},
+  {s:"Statistics SOPs",q:"For blinded trials, SAP approval must occur:",o:["After FPV", "Prior to planned unblinding", "After interim analysis", "Only after DBL"],a:1},
+  {s:"Statistics SOPs",q:"Which statement best matches the definition of a DMC (Data Monitoring Committee)?",o:["Primarily Lilly members from the study team", "Fully independent and unbiased members external to Lilly", "Any steering committee", "A committee only for devices"],a:1},
+  {s:"Statistics SOPs",q:"What tool is initiated alongside creating the BUP?",o:["Decision Log", "Blinding or Unblinding Log of Key Study Team Personnel", "Protocol Change Form", "DTA (Data Transfer Agreement)"],a:1},
+  {s:"DDII Bioinformatics",q:"When integrating multi-omics datasets, which step is most critical before any downstream analysis?",o:["Perform differential expression analysis", "Harmonize and normalize data across batches and platforms", "Run pathway enrichment immediately on raw counts", "Filter to protein-coding genes only"],a:1},
+  {s:"DDII Bioinformatics",q:"What is the conventional genome-wide significance threshold used in GWAS?",o:["P less than 0.05; standard statistical threshold", "P less than 5e-8; Bonferroni correction for 1 million independent tests", "P less than 0.001; conservative cutoff", "P less than 0.01; officially defined by GWAS consortia"],a:1},
+  {s:"DDII Bioinformatics",q:"What is the primary advantage of Mendelian Randomization over standard observational studies?",o:["It uses larger sample sizes", "It leverages genetic variants as natural instruments to infer causal relationships, reducing confounding", "It eliminates the need for biobank data", "It only requires transcriptomic data"],a:1},
+  {s:"DDII Bioinformatics",q:"A known bias in protein-protein interaction networks that must be accounted for:",o:["Highly studied proteins have disproportionately more reported interactions due to literature bias", "Network hubs are always the best drug targets", "PPI data is only available for mouse proteins", "Interaction networks cannot be used with GWAS data"],a:0},
+  {s:"DDII AAAC NMA",q:"What does AAAC stand for?",o:["Automated Analysis and Clinical Compliance", "Advanced Algorithms for Analytical Computing", "Associated Agencies for Accreditation and Certification", "Advanced Analytics and Access Capabilities"],a:3},
+  {s:"DDII AAAC NMA",q:"What does NMA stand for?",o:["Network Meta-Analysis", "National Medical Association", "Non-inferiority Margin Assessment", "Normalized Mean Adjustment"],a:0},
+  {s:"DDII AAAC NMA",q:"What does MAIC stand for?",o:["Meta-Analysis of Individual Cases", "Maximum Achievable Incremental Cost", "Matching-Adjusted Indirect Comparison", "Multiple Analysis of Independent Cohorts"],a:2},
+  {s:"DDII AAAC NMA",q:"Which of the following is a well-known HTA body in the UK?",o:["EMA", "TGA", "NICE (National Institute for Health and Care Excellence)", "FDA"],a:2},
+  {s:"DDII AAAC NMA",q:"On which two fundamental bases are treatments compared in an NMA for HTA submissions?",o:["Efficacy and safety", "Cost and manufacturing complexity", "Study duration and sample size", "Patient age and gender distribution"],a:0},
+  {s:"DDII AAAC NMA",q:"Why do HTA bodies require indirect treatment comparisons (ITC)?",o:["To satisfy journal publication requirements", "To replace Phase 3 trials", "To increase the sample size of individual trials", "Head-to-head trials between all comparators rarely exist and payers need relative efficacy evidence"],a:3},
+  {s:"DDII DHAI",q:"What does DHAI stand for?",o:["Digital Health AI Infrastructure", "Data Hub for Analytical Integration", "Design Hub Analytics Initiatives", "Drug Health Assessment Index"],a:2},
+  {s:"DDII DHAI",q:"What does SOA stand for in the context of clinical trials?",o:["Standard Operating Agreement", "Summary of Analysis", "Statement of Approval", "Schedule of Activities"],a:3},
+  {s:"DDII DHAI",q:"What does IE stand for in clinical trial review?",o:["Internal Evaluation", "Inclusion/Exclusion", "Interim Efficacy", "Investigator Endorsement"],a:1},
+  {s:"DDII DHAI",q:"What key impact has the Digital SOA product achieved?",o:["Increased clinical trial duration by 50%", "40% remote visits, streamlined visits by 25%, reduced procedures by 33%, avoided 30M in trial grant costs", "Doubled the number of study sites required", "Eliminated the need for informed consent"],a:1},
+  {s:"DDII R Shiny",q:"What is R Shiny?",o:["A data storage tool", "An interactive web application framework for R", "A machine learning library", "A database management system"],a:1},
+  {s:"DDII R Shiny",q:"What are the two main components of a Shiny application?",o:["Input and Output", "UI and Server", "Frontend and Database", "Client and API"],a:1},
+  {s:"DDII R Shiny",q:"What is reactive() used for in R Shiny?",o:["To style the UI", "To connect to a database", "To create reactive expressions that update automatically", "To deploy the application"],a:2},
+  {s:"DDII R Shiny",q:"What is the full form of CRAN in R?",o:["Central Repository for Analytical Networks", "Comprehensive R Archive Network", "Common R Application Node", "Central R Analysis Network"],a:1},
+  {s:"DDII R Shiny",q:"Which platform is commonly used to host and deploy R Shiny applications in organisations?",o:["GitHub Pages", "Netlify", "Posit Connect", "Heroku"],a:2},
+  {s:"DDII CI",q:"What does CI stand for in the pharmaceutical industry context?",o:["Clinical Intelligence", "Corporate Intelligence", "Competitive Intelligence", "Commercial Intelligence"],a:2},
+  {s:"DDII CI",q:"Which sequence correctly describes Lilly CI workflow?",o:["Analysis to Collection to Insights to Scope to Dissemination", "Scope to Data Collection to Organize and Transform to Analysis to Insights to Inform Decision", "Data Collection to Scope to Analysis to Transform to Insights to Communicate", "Scope to Analysis to Data Collection to Organize to Disseminate"],a:1},
+  {s:"DDII CI",q:"Which CI activity involves monitoring abstracts, presentations, and late-breakers at scientific congresses?",o:["Patent Analysis", "Ad hoc Requests", "Conference Coverage", "Target and Disease Landscapes"],a:2},
+  {s:"DDII CI",q:"Which of the following would be considered a breach of CI ethics?",o:["Using ClinicalTrials.gov to track a competitor Phase 3 enrollment", "Attending a public medical conference and summarising competitor presentations", "Reviewing a competitor investor relations website for pipeline disclosures", "Calling a competitor employee under a false pretext to elicit confidential pipeline information"],a:3},
+  {s:"DDII CI",q:"Why is triangulation of sources an important best practice in CI?",o:["It is a mathematical modeling technique used to forecast competitor drug sales", "It helps balance workload evenly across CI team members", "It is a formatting requirement for landscape Excel deliverables", "It validates findings by cross-referencing multiple independent sources to improve accuracy and confidence"],a:3},
+  {s:"DDII BI",q:"What does In-licensing mean in the context of pharma Business Development?",o:["Selling proprietary technology to a competitor", "Acquiring rights to use another company drug, technology, or IP in exchange for payments", "Filing patents in multiple countries simultaneously", "Transferring an asset to a generic manufacturer"],a:1},
+  {s:"DDII BI",q:"What does technical diligence primarily assess in a BD context?",o:["The commercial forecast and revenue projections of a target asset", "The scientific validity, manufacturing feasibility, and development risk of a drug candidate", "The legal status of trademark registrations", "The pricing strategy recommended by market access teams"],a:1},
+  {s:"DDII BI",q:"What is the main objective of the Catalyze360 team?",o:["To manufacture drugs for global distribution", "To identify, evaluate, invest in, and nurture external innovations", "To conduct clinical trials for Lilly internal molecules", "To manage post-marketing safety surveillance"],a:1},
+  {s:"DDII BI",q:"Which functions are part of the Catalyze360 group?",o:["Lilly Diagnostics, Lilly Digital, Lilly Analytics", "Lilly Clinical, Lilly Regulatory, Lilly Safety", "Lilly Ventures Capital, Lilly ExploRD, Lilly Gateway Labs, Tune Labs", "Lilly Manufacturing, Lilly Supply Chain, Lilly Commercial"],a:2},
+  {s:"DDII BI",q:"What does exclusivity mean in a pharma licensing deal?",o:["The right to charge a premium price for a drug in a specific market", "A clause that prevents the licensor from signing the same deal with any other company in the agreed territory or field", "The period during which a drug cannot be reviewed by regulators", "A restriction preventing the licensee from hiring the licensors employees"],a:1},
+  {s:"DDII BI",q:"When was the BI team started?",o:["January 2023", "October 2024", "May 2024", "March 2022"],a:2}
+];
+
+/* ── QUESTION PICKER ── */
 function pickQuestions(){
-  // Group by source
   const by={};
   ALL_Q.forEach(q=>{if(!by[q.s])by[q.s]=[];by[q.s].push(q);});
-  const srcs=Object.keys(by);
   let pool=[];
-  // Randomly take 1 from each source first
-  srcs.forEach(s=>{const sh=shuffle(by[s]);pool.push(sh[0]);});
-  // Shuffle pool so far
+  Object.keys(by).forEach(s=>{const sh=shuffle(by[s]);pool.push(sh[0]);});
   pool=shuffle(pool);
-  // Then fill up to Q_COUNT from the remaining questions
   if(pool.length<Q_COUNT){
     const used=new Set(pool.map(q=>q.q));
     const rem=shuffle(ALL_Q.filter(q=>!used.has(q.q)));
     pool=[...pool,...rem.slice(0,Q_COUNT-pool.length)];
   }
-  // Final shuffle and trim
   return shuffle(pool).slice(0,Q_COUNT);
 }
 
-/* ─── SHARED LEADERBOARD (localStorage — same hosted URL = shared device) ─── */
-function sortLBData(){
-  lbData.sort((a,b)=>{
-    const slotA=parseInt((a.slot||'').replace(/\D/g,''))||0;
-    const slotB=parseInt((b.slot||'').replace(/\D/g,''))||0;
-    if(slotA!==slotB) return slotA-slotB;
-    return a.timeTaken-b.timeTaken;
-  });
-}
-
-/* --- GITHUB LEADERBOARD --- */
-let lbPollInt = null;
-let ghFileSha = null; // needed for GitHub file updates
-
+/* ── GITHUB LEADERBOARD ── */
 async function ghGet(){
   try{
-    // Add timestamp to bust cache
-    const r = await fetch(GH_API + "?t=" + Date.now(), {headers: GH_HEADS});
-    if(!r.ok) return null;
-    const j = await r.json();
-    const decoded = atob(j.content.replace(/\n/g,""));
-    ghFileSha = j.sha;
-    const parsed = JSON.parse(decoded);
-    return Array.isArray(parsed.leaderboard) ? parsed.leaderboard : [];
-  }catch(e){ console.warn("GH read error",e); return null; }
+    const r=await fetch(GH_API+"?t="+Date.now(),{headers:GH_HEADS});
+    if(!r.ok)return null;
+    const j=await r.json();
+    const decoded=decodeURIComponent(escape(atob(j.content.replace(/\n/g,""))));
+    ghFileSha=j.sha;
+    const parsed=JSON.parse(decoded);
+    return Array.isArray(parsed.leaderboard)?parsed.leaderboard:[];
+  }catch(e){console.warn("GH read error",e);return null;}
 }
-
 async function ghSet(arr){
   try{
-    // Always fetch latest SHA before writing to avoid conflicts
     if(!ghFileSha){
-      const r = await fetch(GH_API, {headers: GH_HEADS});
-      if(r.ok){ const j = await r.json(); ghFileSha = j.sha; }
+      const r=await fetch(GH_API,{headers:GH_HEADS});
+      if(r.ok){const j=await r.json();ghFileSha=j.sha;}
     }
-    const body = { message: "leaderboard update", content: btoa(JSON.stringify({leaderboard:arr})), sha: ghFileSha };
-    const r = await fetch(GH_API, {method:"PUT", headers: GH_HEADS, body: JSON.stringify(body)});
-    if(r.ok){ const j = await r.json(); ghFileSha = j.content.sha; }
-    else{ console.warn("GH write failed", r.status, await r.text()); }
-  }catch(e){ console.warn("GH write error",e); }
+    const body={message:"leaderboard update",content:btoa(unescape(encodeURIComponent(JSON.stringify({leaderboard:arr})))),sha:ghFileSha};
+    const r=await fetch(GH_API,{method:"PUT",headers:GH_HEADS,body:JSON.stringify(body)});
+    if(r.ok){const j=await r.json();ghFileSha=j.content.sha;}
+    else{console.warn("GH write failed",r.status);}
+  }catch(e){console.warn("GH write error",e);}
 }
-
 async function saveLB(entry){
-  entry.uid = Date.now()+"_"+Math.random().toString(36).slice(2);
+  entry.uid=Date.now()+"_"+Math.random().toString(36).slice(2);
   if(GH_READY){
-    const current = await ghGet() || [];
+    const current=await ghGet()||[];
     current.push(entry);
     await ghSet(current);
-  } else {
+  }else{
     try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}catch{lbData=[];}
-    lbData.push(entry);
-    sortLBData();
+    lbData.push(entry);sortLBData();
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
   }
 }
-
 async function deleteEntry(uid){
-  if(!confirm("Delete this team from the leaderboard?")) return;
+  if(!confirm("Delete this team from the leaderboard?"))return;
   if(GH_READY){
-    document.getElementById("lbBody").innerHTML='<div class="lb-empty">&#9203; Deleting...</div>';
-    const current = await ghGet() || [];
-    const updated = current.filter(e=>e.uid!==uid);
-    await ghSet(updated);
-    lbData = updated;
-    renderLBFromData();
-  } else {
-    lbData = lbData.filter(e=>e.uid!==uid);
+    document.getElementById("lbBody").innerHTML='<div class="lb-empty">Deleting...</div>';
+    const current=await ghGet()||[];
+    const updated=current.filter(e=>e.uid!==uid);
+    await ghSet(updated);lbData=updated;renderLBFromData();
+  }else{
+    lbData=lbData.filter(e=>e.uid!==uid);
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
     renderLBFromData();
   }
 }
-
 async function clearAllLB(){
-  if(!confirm("Clear the ENTIRE leaderboard? This cannot be undone.")) return;
-  if(GH_READY){
-    await ghSet([]);
-    lbData=[];
-    renderLBFromData();
-  } else {
-    lbData=[];
-    try{localStorage.removeItem(STORAGE_KEY);}catch{}
-    renderLBFromData();
-  }
+  if(!confirm("Clear the ENTIRE leaderboard? This cannot be undone."))return;
+  if(GH_READY){await ghSet([]);lbData=[];renderLBFromData();}
+  else{lbData=[];try{localStorage.removeItem(STORAGE_KEY);}catch{}renderLBFromData();}
 }
-
 function renderLBFromData(){
   sortLBData();
-  const body=document.getElementById("lbBody");
-  body.innerHTML="";
-  if(!lbData.length){
-    body.innerHTML='<div class="lb-empty">No entries yet &mdash; be the first to play!</div>';
-    return;
-  }
+  const body=document.getElementById("lbBody");body.innerHTML="";
+  if(!lbData.length){body.innerHTML='<div class="lb-empty">No entries yet &mdash; be the first to play!</div>';return;}
   lbData.forEach((e,i)=>{
     const d=document.createElement("div");
     d.className="lb-row"+(i===0?" gold":i===1?" silver":i===2?" bronze":"");
     const medals=["&#127947;","&#127948;","&#127949;"];
-    const rankEl=i<3
-      ?'<div class="lb-rank-medal">'+medals[i]+"</div>"
-      :'<div class="lb-rank-num">'+(i+1)+"</div>";
+    const rankEl=i<3?'<div class="lb-rank-medal">'+medals[i]+"</div>":'<div class="lb-rank-num">'+(i+1)+"</div>";
     const sc=Math.round((e.score/e.total)*100);
     const scCls=sc>=80?"lb-score sc-high":sc>=60?"lb-score sc-mid":"lb-score sc-low";
     const safeUid=String(e.uid||i).replace(/"/g,"&quot;");
@@ -584,19 +469,16 @@ function renderLBFromData(){
       '<div class="lb-slot">'+esc(e.slot)+"</div>"+
       '<div class="'+scCls+'">'+e.score+"/"+e.total+"</div>"+
       '<div class="lb-time">'+esc(e.timeStr)+"</div>"+
-      '<div><button class="lb-del" title="Delete" onclick="deleteEntry(&quot;'+safeUid+'&quot;)">&#128465;</button></div>';
+      '<div><button class="lb-del" onclick="deleteEntry(&quot;'+safeUid+'&quot;)">&#128465;</button></div>';
     body.appendChild(d);
   });
 }
-
 async function fetchAndRenderLB(){
   if(GH_READY){
-    const data = await ghGet();
-    if(data !== null){ lbData = data; renderLBFromData(); }
-    else{
-      document.getElementById("lbBody").innerHTML='<div class="lb-empty">Could not load leaderboard. Check your GitHub credentials.</div>';
-    }
-  } else {
+    const data=await ghGet();
+    if(data!==null){lbData=data;renderLBFromData();}
+    else{document.getElementById("lbBody").innerHTML='<div class="lb-empty">Could not load. Check GitHub credentials.</div>';}
+  }else{
     try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}catch{lbData=[];}
     renderLBFromData();
     const body=document.getElementById("lbBody");
@@ -606,13 +488,140 @@ async function fetchAndRenderLB(){
     body.appendChild(warn);
   }
 }
-
 function showLeaderboard(){
   show("screen-leaderboard");
-  document.getElementById("lbBody").innerHTML='<div class="lb-empty">&#9203; Loading...</div>';
+  document.getElementById("lbBody").innerHTML='<div class="lb-empty">Loading...</div>';
   fetchAndRenderLB();
   clearInterval(lbPollInt);
-  lbPollInt = setInterval(fetchAndRenderLB, 15000);
+  lbPollInt=setInterval(fetchAndRenderLB,15000);
+}
+function stopLBPoll(){clearInterval(lbPollInt);}
+
+/* ── QUIZ ── */
+function startQuiz(){
+  const teamName=document.getElementById('teamNameInp').value.trim();
+  const slot=document.getElementById('slotSel').value;
+  if(!teamName){alert('Please enter your Team Name.');return;}
+  if(parsedMembers.length!==3){alert('Please enter exactly 3 member names and 3 IDs separated by commas.');return;}
+  if(!slot){alert('Please select your slot.');return;}
+  regData={slot,teamName,memberNames:parsedMembers.map(m=>m.name).join(', '),memberIds:parsedMembers.map(m=>m.id).join(', ')};
+  questions=pickQuestions();answers={};current=0;timerSec=TOTAL_SECS;submitted=false;
+  startTime=Date.now();renderQ();renderNav();
+  show('screen-quiz');
+  document.getElementById('timeoutBanner').style.display='none';
+  startTimer();
+}
+function startTimer(){
+  clearInterval(timerInt);
+  timerInt=setInterval(()=>{timerSec--;updateTimer();if(timerSec<=0){clearInterval(timerInt);onTimeout();}},1000);
+}
+function onTimeout(){document.getElementById('timeoutBanner').style.display='block';finishQuiz(true);}
+function updateTimer(){
+  document.getElementById('timerVal').textContent=fmt(timerSec);
+  const pct=(timerSec/TOTAL_SECS)*100;
+  const bar=document.getElementById('timerBar');
+  bar.style.width=pct+'%';
+  const col=timerSec>60?'#16A34A':timerSec>30?'#D97706':'#C8102E';
+  bar.style.background=col;
+  document.getElementById('timerVal').style.color=col;
+}
+function renderQ(){
+  const q=questions[current];
+  document.getElementById('qNum').textContent='Question '+(current+1)+' of '+questions.length;
+  document.getElementById('qDone').textContent=Object.keys(answers).length+' answered';
+  document.getElementById('progFill').style.width=((current/questions.length)*100)+'%';
+  document.getElementById('qSrc').textContent=q.s;
+  document.getElementById('qText').textContent=q.q;
+  const c=document.getElementById('opts');c.innerHTML='';
+  q.o.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'+(answers[current]===i?' selected':'');
+    b.innerHTML='<span class="opt-letter">'+['A','B','C','D'][i]+'.</span> '+esc(opt);
+    b.onclick=()=>{answers[current]=i;renderQ();renderNav();};
+    c.appendChild(b);
+  });
+  document.getElementById('btnPrev').disabled=(current===0);
+  const bn=document.getElementById('btnNext');
+  if(current===questions.length-1){bn.textContent='Finish Quiz';bn.className='btn-finish';bn.onclick=()=>confirmSubmit();}
+  else{bn.textContent='Next';bn.className='btn-next';bn.onclick=()=>navigate(1);}
+}
+function navigate(d){current=Math.max(0,Math.min(questions.length-1,current+d));renderQ();}
+function renderNav(){
+  const g=document.getElementById('navGrid');g.innerHTML='';
+  questions.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.className='nav-dot'+(i===current?' cur':answers[i]!==undefined?' ans':'');
+    b.textContent=i+1;b.onclick=()=>{current=i;renderQ();renderNav();};
+    g.appendChild(b);
+  });
+}
+function confirmSubmit(){
+  const u=questions.length-Object.keys(answers).length;
+  if(u>0&&!confirm(u+' question(s) unanswered. Submit anyway?'))return;
+  finishQuiz();
+}
+async function finishQuiz(timedOut=false){
+  if(submitted)return;submitted=true;clearInterval(timerInt);
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  let score=0;questions.forEach((q,i)=>{if(answers[i]===q.a)score++;});
+  const pct=Math.round((score/questions.length)*100);
+  const mins=Math.floor(elapsed/60),secs=elapsed%60;
+  const timeStr=mins+'m '+(secs<10?'0':'')+secs+'s';
+  const entry={teamName:regData.teamName,slot:regData.slot,memberNames:regData.memberNames,
+    score,total:questions.length,timeTaken:elapsed,timeStr,pct,timestamp:Date.now()};
+  await saveLB(entry);
+  showResult(score,pct,elapsed,timeStr,timedOut);
+}
+function showResult(score,pct,elapsed,timeStr,timedOut){
+  document.getElementById('resEmoji').innerHTML=pct>=80?'&#127881;':pct>=60?'&#128077;':'&#128170;';
+  document.getElementById('resName').textContent=regData.teamName;
+  document.getElementById('resTeam').textContent=regData.memberNames+' - '+regData.slot;
+  const sv=document.getElementById('resScore');
+  sv.textContent=score+'/'+questions.length;
+  sv.style.color=pct>=80?'#16A34A':pct>=60?'#D97706':'#C8102E';
+  document.getElementById('resPct').textContent=pct+'% correct';
+  document.getElementById('resTime').textContent=timeStr+(timedOut?' (Time up!)':'');
+  const rl=document.getElementById('reviewList');rl.innerHTML='';
+  questions.forEach((q,i)=>{
+    const ua=answers[i],ok=ua===q.a;
+    const d=document.createElement('div');d.className='review-item';
+    const qText=q.q.length>80?q.q.substring(0,80)+'...':q.q;
+    d.innerHTML='<div class="review-q">Q'+(i+1)+'. '+esc(qText)+'</div>'+
+      (!ok&&ua!==undefined?'<div class="review-wrong">Wrong: '+esc(q.o[ua])+'</div>':'')+
+      (!ok&&ua===undefined?'<div class="review-wrong">Not answered</div>':'')+
+      '<div class="review-correct">Correct: '+esc(q.o[q.a])+'</div>';
+    rl.appendChild(d);
+  });
+  show('screen-result');
 }
 
-function stopLBPoll(){ clearInterval(lbPollInt); }
+/* ── ADMIN / QR ── */
+function genQR(){
+  const url=document.getElementById('qrUrlInp').value.trim();
+  if(!url){alert('Please enter a URL first.');return;}
+  document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=0033A0&data='+encodeURIComponent(url);
+}
+function showAdmin(){
+  const cur=window.location.href;
+  document.getElementById('qrUrlInp').value=cur;genQR();
+  show('screen-admin');stopLBPoll();
+}
+function goReg(){
+  stopLBPoll();submitted=false;
+  document.getElementById('teamNameInp').value='';
+  document.getElementById('memberNamesInp').value='';
+  document.getElementById('memberIdsInp').value='';
+  document.getElementById('slotSel').value='';
+  document.getElementById('parseHint').style.display='none';
+  parsedMembers=[];show('screen-register');
+}
+
+/* ── INIT ── */
+window.addEventListener('load',function(){
+  const cur=window.location.href;
+  document.getElementById('qrUrlInp').value=cur;
+  document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=0033A0&data='+encodeURIComponent(cur);
+});
+</script>
+</body>
+</html>
