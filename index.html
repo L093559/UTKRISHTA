@@ -234,7 +234,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     <div class="lb-bottom">
       <button class="btn-back" onclick="goReg()">&#8592; Back</button>
       <button class="btn-refresh" onclick="fetchAndRenderLB()">&#8635; Refresh</button>
-      <button class="btn-clearall" onclick="clearAllLB()">&#128465; Clear All</button>
+      <span id="lbAdminBtns" style="display:none;gap:10px">
+        <button class="btn-clearall" onclick="clearAllLB()">&#128465; Clear All</button>
+      </span>
     </div>
   </div>
 </div>
@@ -476,6 +478,7 @@ async function clearAllLB(){
 function renderLBFromData(){
   sortLBData();
   const body=document.getElementById("lbBody");body.innerHTML="";
+  const isAdmin=isGHReady();
   if(!lbData.length){body.innerHTML='<div class="lb-empty">No entries yet &mdash; be the first to play!</div>';return;}
   lbData.forEach((e,i)=>{
     const d=document.createElement("div");
@@ -485,12 +488,13 @@ function renderLBFromData(){
     const sc=Math.round((e.score/e.total)*100);
     const scCls=sc>=80?"lb-score sc-high":sc>=60?"lb-score sc-mid":"lb-score sc-low";
     const safeUid=String(e.uid||i).replace(/"/g,"&quot;");
+    const delBtn=isAdmin?'<div><button class="lb-del" onclick="deleteEntry(&quot;'+safeUid+'&quot;)">&#128465;</button></div>':'<div></div>';
     d.innerHTML=rankEl+
       '<div class="lb-team">'+esc(e.teamName)+"</div>"+
       '<div class="lb-slot">'+esc(e.slot)+"</div>"+
       '<div class="'+scCls+'">'+e.score+"/"+e.total+"</div>"+
       '<div class="lb-time">'+esc(e.timeStr)+"</div>"+
-      '<div><button class="lb-del" onclick="deleteEntry(&quot;'+safeUid+'&quot;)">&#128465;</button></div>';
+      delBtn;
     body.appendChild(d);
   });
 }
@@ -512,6 +516,9 @@ async function fetchAndRenderLB(){
 function showLeaderboard(){
   show("screen-leaderboard");
   document.getElementById("lbBody").innerHTML='<div class="lb-empty">Loading...</div>';
+  // Show admin buttons only for organiser (token present)
+  const adminBtns=document.getElementById('lbAdminBtns');
+  if(adminBtns) adminBtns.style.display=isGHReady()?'inline-flex':'none';
   fetchAndRenderLB();
   clearInterval(lbPollInt);
   lbPollInt=setInterval(fetchAndRenderLB,15000);
