@@ -265,7 +265,7 @@ const GH_OWNER = "L093559";
 const GH_REPO  = "UTKRISHTA";
 const GH_TOKEN = "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";
 const GH_FILE  = "leaderboard.json";
-const GH_READY = GH_TOKEN !== "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";
+const GH_READY = true;
 const GH_API   = "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE;
 const GH_HEADS = {"Authorization":"token "+GH_TOKEN,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"};
 const STORAGE_KEY = "utkrishta_lb_v3";
@@ -289,9 +289,19 @@ function parseMembers(){
   const names=document.getElementById('memberNamesInp').value.split(',').map(s=>s.trim()).filter(Boolean);
   const ids=document.getElementById('memberIdsInp').value.split(',').map(s=>s.trim()).filter(Boolean);
   const hint=document.getElementById('parseHint');
-  if(names.length===3&&ids.length===3){parsedMembers=names.map((n,i)=>({name:n,id:ids[i]}));hint.style.display='none';}
-  else if(names.length>0||ids.length>0){hint.style.display='block';parsedMembers=[];}
-  else{hint.style.display='none';parsedMembers=[];}
+  hint.textContent='Enter exactly 3 names and 3 IDs separated by commas.';
+  if(names.length===3 && ids.length===3){
+    parsedMembers=names.map((n,i)=>({name:n,id:ids[i]}));
+    hint.style.display='none';
+  } else {
+    parsedMembers=[];
+    if(names.length>0 || ids.length>0){
+      hint.textContent='You have '+names.length+' name(s) and '+ids.length+' ID(s). Need exactly 3 each.';
+      hint.style.display='block';
+    } else {
+      hint.style.display='none';
+    }
+  }
 }
 
 const ALL_Q = [
@@ -503,7 +513,7 @@ function startQuiz(){
   const teamName=document.getElementById('teamNameInp').value.trim();
   const slot=document.getElementById('slotSel').value;
   if(!teamName){alert('Please enter your Team Name.');return;}
-  if(parsedMembers.length!==3){alert('Please enter exactly 3 member names and 3 IDs separated by commas.');return;}
+  if(parsedMembers.length!==3){alert('Need exactly 3 member names and 3 IDs.\nYou currently have: '+parsedMembers.length+' valid member(s).\nCheck your commas and try again.');return;}
   if(!slot){alert('Please select your slot.');return;}
   regData={slot,teamName,memberNames:parsedMembers.map(m=>m.name).join(', '),memberIds:parsedMembers.map(m=>m.id).join(', ')};
   questions=pickQuestions();answers={};current=0;timerSec=TOTAL_SECS;submitted=false;
