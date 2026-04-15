@@ -86,9 +86,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .lb-header h1{font-size:26px;font-weight:900;margin:6px 0 3px}
 .lb-header p{opacity:.75;font-size:13px}
 .lb-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.4)}
-.lb-thead{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px 50px;padding:11px 18px;background:#F9FAFB;border-bottom:1px solid #E5E7EB;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.lb-thead{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px;padding:11px 18px;background:#F9FAFB;border-bottom:1px solid #E5E7EB;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 .lb-thead div:nth-child(4),.lb-thead div:nth-child(5){text-align:center}
-.lb-row{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px 50px;padding:13px 18px;border-bottom:1px solid #F3F4F6;align-items:center}
+.lb-row{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px;padding:13px 18px;border-bottom:1px solid #F3F4F6;align-items:center}
 .lb-row:last-child{border-bottom:none}
 .lb-row.gold{background:linear-gradient(90deg,#FFFBEB,#fff)}
 .lb-row.silver{background:linear-gradient(90deg,#F8FAFC,#fff)}
@@ -222,12 +222,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     <div class="lb-header">
       <div class="lb-crown">&#127942;</div>
       <h1>UTKRISHTA Leaderboard</h1>
-      <p>Sorted by Slot &mdash; fastest time within each slot</p>
       <div class="sync-badge"><span class="sync-dot"></span> Live &mdash; updates every 15 seconds</div>
     </div>
     <div class="lb-card">
       <div class="lb-thead">
-        <div>#</div><div>Team Name</div><div>Slot</div><div>Score</div><div>Time</div><div></div>
+        <div>#</div><div>Team Name</div><div>Slot</div><div>Score</div><div>Time</div>
       </div>
       <div id="lbBody"></div>
     </div>
@@ -295,7 +294,12 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function fmt(s){const m=Math.floor(s/60),sc=s%60;return m+':'+(sc<10?'0':'')+sc;}
-function sortLBData(){lbData.sort((a,b)=>{const sa=parseInt((a.slot||'').replace(/\D/g,''))||0,sb=parseInt((b.slot||'').replace(/\D/g,''))||0;return sa!==sb?sa-sb:a.timeTaken-b.timeTaken;});}
+function sortLBData(){lbData.sort((a,b)=>{
+  const sa=parseInt((a.slot||'').replace(/\D/g,''))||0,sb=parseInt((b.slot||'').replace(/\D/g,''))||0;
+  if(sa!==sb) return sa-sb;
+  if(b.score!==a.score) return b.score-a.score;
+  return a.timeTaken-b.timeTaken;
+});}
 
 /* ── PARSE MEMBERS ── */
 function parseMembers(){
@@ -478,7 +482,6 @@ async function clearAllLB(){
 function renderLBFromData(){
   sortLBData();
   const body=document.getElementById("lbBody");body.innerHTML="";
-  const isAdmin=isGHReady();
   if(!lbData.length){body.innerHTML='<div class="lb-empty">No entries yet &mdash; be the first to play!</div>';return;}
   lbData.forEach((e,i)=>{
     const d=document.createElement("div");
@@ -487,14 +490,11 @@ function renderLBFromData(){
     const rankEl=i<3?'<div class="lb-rank-medal">'+medals[i]+"</div>":'<div class="lb-rank-num">'+(i+1)+"</div>";
     const sc=Math.round((e.score/e.total)*100);
     const scCls=sc>=80?"lb-score sc-high":sc>=60?"lb-score sc-mid":"lb-score sc-low";
-    const safeUid=String(e.uid||i).replace(/"/g,"&quot;");
-    const delBtn=isAdmin?'<div><button class="lb-del" onclick="deleteEntry(&quot;'+safeUid+'&quot;)">&#128465;</button></div>':'<div></div>';
     d.innerHTML=rankEl+
       '<div class="lb-team">'+esc(e.teamName)+"</div>"+
       '<div class="lb-slot">'+esc(e.slot)+"</div>"+
       '<div class="'+scCls+'">'+e.score+"/"+e.total+"</div>"+
-      '<div class="lb-time">'+esc(e.timeStr)+"</div>"+
-      delBtn;
+      '<div class="lb-time">'+esc(e.timeStr)+"</div>";
     body.appendChild(d);
   });
 }
