@@ -138,11 +138,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     </div>
     <div class="field">
       <label>&#128100; Member Names <span style="font-weight:400;color:var(--muted)">(comma-separated, 3 names)</span></label>
-      <input id="memberNamesInp" type="text" placeholder="e.g. John Smith, Jane Doe, Bob Lee" oninput="parseMembers()" />
+      <input id="memberNamesInp" type="text" placeholder="e.g. John Smith, Jane Doe, Bob Lee" oninput="parseMembers()" onchange="parseMembers()" onblur="parseMembers()" />
     </div>
     <div class="field">
       <label>&#129499; Member IDs <span style="font-weight:400;color:var(--muted)">(comma-separated, 3 IDs)</span></label>
-      <input id="memberIdsInp" type="text" placeholder="e.g. LBB001, LBB002, LBB003" oninput="parseMembers()" />
+      <input id="memberIdsInp" type="text" placeholder="e.g. LBB001, LBB002, LBB003" oninput="parseMembers()" onchange="parseMembers()" onblur="parseMembers()" />
     </div>
     <div class="field">
       <label>&#128336; Select Slot</label>
@@ -265,7 +265,7 @@ const GH_OWNER = "L093559";
 const GH_REPO  = "UTKRISHTA";
 const GH_TOKEN = "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";
 const GH_FILE  = "leaderboard.json";
-const GH_READY = GH_TOKEN = true;
+const GH_READY = GH_TOKEN !== "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";
 const GH_API   = "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE;
 const GH_HEADS = {"Authorization":"token "+GH_TOKEN,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"};
 const STORAGE_KEY = "utkrishta_lb_v3";
@@ -499,6 +499,7 @@ function stopLBPoll(){clearInterval(lbPollInt);}
 
 /* ── QUIZ ── */
 function startQuiz(){
+  parseMembers();
   const teamName=document.getElementById('teamNameInp').value.trim();
   const slot=document.getElementById('slotSel').value;
   if(!teamName){alert('Please enter your Team Name.');return;}
