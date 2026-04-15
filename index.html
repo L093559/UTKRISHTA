@@ -138,8 +138,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .sc-mid{color:var(--amber)}
 .sc-low{color:var(--red)}
 </style>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -290,15 +288,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
       Scan to open the quiz on any phone &mdash; no app or Claude account needed
     </div>
     <div class="setup-box">
-      <strong>Step 1 — Create a free Firebase project</strong><br>
-      Go to <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → click <strong>Add project</strong> → give it any name → click through (disable Analytics is fine) → Create project.<br><br>
-      <strong>Step 2 — Create a Realtime Database</strong><br>
-      In your project: left sidebar → <strong>Build → Realtime Database</strong> → Create database → choose any location → start in <strong>Test mode</strong> → Enable.<br><br>
-      <strong>Step 3 — Get your config</strong><br>
-      Left sidebar → Project settings (gear icon) → scroll to <strong>Your apps</strong> → click <strong>&lt;/&gt; Web</strong> → register app (any nickname) → copy the <code>firebaseConfig</code> object shown.<br><br>
-      <strong>Step 4 — Paste into the quiz file</strong><br>
-      Open <code>index.html</code> in a text editor → find <code>FIREBASE_CONFIG</code> near the top of the script → replace each <code>PASTE_..._HERE</code> value with the real values from your config → save → re-upload to GitHub.<br><br>
-      ✅ Once done, every phone that opens the quiz URL shares the same live leaderboard instantly.
+      <strong>Step 1 &mdash; Create leaderboard.json in your repo</strong><br>
+      Go to your GitHub repo (UTKRISHTA) &rarr; click <strong>Add file &rarr; Create new file</strong> &rarr; name it <code>leaderboard.json</code> &rarr; paste this content: <code>{"leaderboard":[]}</code> &rarr; click <strong>Commit changes</strong>.<br><br>
+      <strong>Step 2 &mdash; Create a Personal Access Token (PAT)</strong><br>
+      On GitHub: click your <strong>profile picture</strong> (top right) &rarr; <strong>Settings</strong> &rarr; scroll to bottom &rarr; <strong>Developer settings</strong> &rarr; <strong>Personal access tokens &rarr; Tokens (classic)</strong> &rarr; <strong>Generate new token (classic)</strong> &rarr; give it a name like "quiz-token" &rarr; set expiry to <strong>90 days</strong> &rarr; tick <strong>public_repo</strong> checkbox &rarr; click <strong>Generate token</strong> &rarr; <strong>copy the token</strong> immediately (it won't show again).<br><br>
+      <strong>Step 3 &mdash; Paste into the quiz file</strong><br>
+      Open <code>index.html</code> on GitHub &rarr; click &#9999; Edit &rarr; search for <code>PASTE_GITHUB_USERNAME_HERE</code> and replace with your GitHub username (e.g. <code>1093559</code>) &rarr; replace <code>PASTE_REPO_NAME_HERE</code> with <code>UTKRISHTA</code> &rarr; replace <code>PASTE_GITHUB_PAT_HERE</code> with your token &rarr; Commit changes.<br><br>
+      &check; Done! Every phone that scans the QR shares the same live leaderboard &mdash; using your existing GitHub account, no new signup needed.
     </div>
     <button class="btn-primary" onclick="goReg()" style="margin-top:16px">&#8592; Back to Quiz</button>
   </div>
@@ -334,28 +330,17 @@ const TOTAL_SECS = 180;
 const Q_COUNT = 15;
 const STORAGE_KEY = "utkrishta_leaderboard_v2";
 
-/* ═══════════════════════════════════════════════════════
-   FIREBASE SETUP — paste your config here after setup
-   Steps shown in QR & Setup screen inside the quiz
-════════════════════════════════════════════════════════ */
-const FIREBASE_CONFIG = {
-  apiKey:            "PASTE_API_KEY_HERE",
-  authDomain:        "PASTE_AUTH_DOMAIN_HERE",
-  databaseURL:       "PASTE_DATABASE_URL_HERE",
-  projectId:         "PASTE_PROJECT_ID_HERE",
-  storageBucket:     "PASTE_STORAGE_BUCKET_HERE",
-  messagingSenderId: "PASTE_MESSAGING_SENDER_ID_HERE",
-  appId:             "PASTE_APP_ID_HERE"
-};
-const FB_PATH = "utkrishta_leaderboard";
-const FB_READY = FIREBASE_CONFIG.databaseURL !== "PASTE_DATABASE_URL_HERE" && FIREBASE_CONFIG.databaseURL !== "";
-let fbDB = null;
-if(FB_READY){
-  try{
-    firebase.initializeApp(FIREBASE_CONFIG);
-    fbDB = firebase.database();
-  }catch(e){ console.warn("Firebase init failed:", e); }
-}
+/* =======================================================
+   GITHUB LEADERBOARD SETUP
+   Uses your existing GitHub repo - no new signup needed!
+======================================================= */
+const GH_OWNER  = "PASTE_GITHUB_USERNAME_HERE";   // e.g. "1093559"
+const GH_REPO   = "PASTE_REPO_NAME_HERE";         // e.g. "UTKRISHTA"
+const GH_TOKEN  = "PASTE_GITHUB_PAT_HERE";        // Personal Access Token
+const GH_FILE   = "leaderboard.json";
+const GH_READY  = GH_TOKEN !== "PASTE_GITHUB_PAT_HERE";
+const GH_API    = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_FILE;
+const GH_HEADS  = { "Authorization": "token " + GH_TOKEN, "Content-Type": "application/json", "Accept": "application/vnd.github.v3+json" };
 
 /* ─── QUESTION BANK ─── */
 const ALL_Q = [
@@ -502,35 +487,73 @@ function sortLBData(){
   });
 }
 
-/* ─── FIREBASE LEADERBOARD ─── */
-function saveLB(entry){
-  if(FB_READY && fbDB){
-    fbDB.ref(FB_PATH).push(entry);
+/* --- GITHUB LEADERBOARD --- */
+let lbPollInt = null;
+let ghFileSha = null; // needed for GitHub file updates
+
+async function ghGet(){
+  try{
+    // Add timestamp to bust cache
+    const r = await fetch(GH_API + "?t=" + Date.now(), {headers: GH_HEADS});
+    if(!r.ok) return null;
+    const j = await r.json();
+    const decoded = atob(j.content.replace(/\n/g,""));
+    ghFileSha = j.sha;
+    const parsed = JSON.parse(decoded);
+    return Array.isArray(parsed.leaderboard) ? parsed.leaderboard : [];
+  }catch(e){ console.warn("GH read error",e); return null; }
+}
+
+async function ghSet(arr){
+  try{
+    // Always fetch latest SHA before writing to avoid conflicts
+    if(!ghFileSha){
+      const r = await fetch(GH_API, {headers: GH_HEADS});
+      if(r.ok){ const j = await r.json(); ghFileSha = j.sha; }
+    }
+    const body = { message: "leaderboard update", content: btoa(JSON.stringify({leaderboard:arr})), sha: ghFileSha };
+    const r = await fetch(GH_API, {method:"PUT", headers: GH_HEADS, body: JSON.stringify(body)});
+    if(r.ok){ const j = await r.json(); ghFileSha = j.content.sha; }
+    else{ console.warn("GH write failed", r.status, await r.text()); }
+  }catch(e){ console.warn("GH write error",e); }
+}
+
+async function saveLB(entry){
+  entry.uid = Date.now()+"_"+Math.random().toString(36).slice(2);
+  if(GH_READY){
+    const current = await ghGet() || [];
+    current.push(entry);
+    await ghSet(current);
   } else {
-    // localStorage fallback
-    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
-    entry.uid = Date.now()+'_'+Math.random().toString(36).slice(2);
+    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}catch{lbData=[];}
     lbData.push(entry);
     sortLBData();
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
   }
 }
 
-function deleteEntry(key){
-  if(!confirm('Delete this team from the leaderboard?')) return;
-  if(FB_READY && fbDB){
-    fbDB.ref(FB_PATH+'/'+key).remove();
+async function deleteEntry(uid){
+  if(!confirm("Delete this team from the leaderboard?")) return;
+  if(GH_READY){
+    document.getElementById("lbBody").innerHTML='<div class="lb-empty">&#9203; Deleting...</div>';
+    const current = await ghGet() || [];
+    const updated = current.filter(e=>e.uid!==uid);
+    await ghSet(updated);
+    lbData = updated;
+    renderLBFromData();
   } else {
-    lbData = lbData.filter(e=>e._key!==key && e.uid!==key);
+    lbData = lbData.filter(e=>e.uid!==uid);
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
     renderLBFromData();
   }
 }
 
-function clearAllLB(){
-  if(!confirm('Clear the ENTIRE leaderboard? This cannot be undone.')) return;
-  if(FB_READY && fbDB){
-    fbDB.ref(FB_PATH).remove();
+async function clearAllLB(){
+  if(!confirm("Clear the ENTIRE leaderboard? This cannot be undone.")) return;
+  if(GH_READY){
+    await ghSet([]);
+    lbData=[];
+    renderLBFromData();
   } else {
     lbData=[];
     try{localStorage.removeItem(STORAGE_KEY);}catch{}
@@ -540,103 +563,56 @@ function clearAllLB(){
 
 function renderLBFromData(){
   sortLBData();
-  const body=document.getElementById('lbBody');
-  body.innerHTML='';
+  const body=document.getElementById("lbBody");
+  body.innerHTML="";
   if(!lbData.length){
-    body.innerHTML='<div class="lb-empty">No entries yet — be the first to play!</div>';
+    body.innerHTML='<div class="lb-empty">No entries yet &mdash; be the first to play!</div>';
     return;
   }
   lbData.forEach((e,i)=>{
-    const d=document.createElement('div');
-    d.className='lb-row'+(i===0?' gold':i===1?' silver':i===2?' bronze':'');
-    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
-    const rankEl=medal
-      ?'<div class="lb-rank-medal">'+medal+'</div>'
-      :'<div class="lb-rank-num">'+(i+1)+'</div>';
+    const d=document.createElement("div");
+    d.className="lb-row"+(i===0?" gold":i===1?" silver":i===2?" bronze":"");
+    const medals=["&#127947;","&#127948;","&#127949;"];
+    const rankEl=i<3
+      ?'<div class="lb-rank-medal">'+medals[i]+"</div>"
+      :'<div class="lb-rank-num">'+(i+1)+"</div>";
     const sc=Math.round((e.score/e.total)*100);
-    const scCls=sc>=80?'lb-score sc-high':sc>=60?'lb-score sc-mid':'lb-score sc-low';
-    const key=String(e._key||e.uid||i).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const scCls=sc>=80?"lb-score sc-high":sc>=60?"lb-score sc-mid":"lb-score sc-low";
+    const safeUid=String(e.uid||i).replace(/"/g,"&quot;");
     d.innerHTML=rankEl+
-      '<div class="lb-team">'+esc(e.teamName)+'</div>'+
-      '<div class="lb-slot">'+esc(e.slot)+'</div>'+
-      '<div class="'+scCls+'">'+e.score+'/'+e.total+'</div>'+
-      '<div class="lb-time">'+esc(e.timeStr)+'</div>'+
-      '<div><button class="lb-del" title="Delete" onclick="deleteEntry(\''+key+'\')">&#128465;</button></div>';
+      '<div class="lb-team">'+esc(e.teamName)+"</div>"+
+      '<div class="lb-slot">'+esc(e.slot)+"</div>"+
+      '<div class="'+scCls+'">'+e.score+"/"+e.total+"</div>"+
+      '<div class="lb-time">'+esc(e.timeStr)+"</div>"+
+      '<div><button class="lb-del" title="Delete" onclick="deleteEntry(&quot;'+safeUid+'&quot;)">&#128465;</button></div>';
     body.appendChild(d);
   });
 }
 
-function renderLB(){
-  if(!FB_READY || !fbDB){
-    // localStorage fallback — one-time read
-    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
-    renderLBFromData();
-  }
-  // Firebase: handled by real-time listener in showLeaderboard()
-}
-
-let lbListener=null;
-function showLeaderboard(){
-  show('screen-leaderboard');
-  if(FB_READY && fbDB){
-    document.getElementById('lbBody').innerHTML='<div class="lb-empty">&#9203; Loading…</div>';
-    // Detach any previous listener
-    if(lbListener) fbDB.ref(FB_PATH).off('value', lbListener);
-    lbListener = fbDB.ref(FB_PATH).on('value', snap=>{
-      lbData=[];
-      snap.forEach(child=>{ lbData.push({...child.val(), _key:child.key}); });
-      renderLBFromData();
-    });
+async function fetchAndRenderLB(){
+  if(GH_READY){
+    const data = await ghGet();
+    if(data !== null){ lbData = data; renderLBFromData(); }
+    else{
+      document.getElementById("lbBody").innerHTML='<div class="lb-empty">Could not load leaderboard. Check your GitHub credentials.</div>';
+    }
   } else {
-    // localStorage fallback
-    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
+    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}catch{lbData=[];}
     renderLBFromData();
-    // show warning
-    const body=document.getElementById('lbBody');
-    const warn=document.createElement('div');
-    warn.style.cssText='padding:10px 18px;font-size:12px;color:#D97706;background:#FFFBEB;border-top:1px solid #FDE68A;';
-    warn.textContent='⚠ Firebase not configured — leaderboard is device-only. See QR & Setup screen.';
+    const body=document.getElementById("lbBody");
+    const warn=document.createElement("div");
+    warn.style.cssText="padding:10px 18px;font-size:12px;color:#D97706;background:#FFFBEB;border-top:1px solid #FDE68A;";
+    warn.textContent="GitHub not configured - leaderboard is device-only. See QR & Setup screen.";
     body.appendChild(warn);
   }
 }
 
-function stopLBPoll(){
-  if(lbListener && fbDB){ fbDB.ref(FB_PATH).off('value', lbListener); lbListener=null; }
+function showLeaderboard(){
+  show("screen-leaderboard");
+  document.getElementById("lbBody").innerHTML='<div class="lb-empty">&#9203; Loading...</div>';
+  fetchAndRenderLB();
+  clearInterval(lbPollInt);
+  lbPollInt = setInterval(fetchAndRenderLB, 15000);
 }
 
-/* ─── ADMIN / QR ─── */
-function genQR(){
-  const url=document.getElementById('qrUrlInp').value.trim();
-  if(!url){alert('Please enter a URL first.');return;}
-  const encoded=encodeURIComponent(url);
-  document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=0033A0&data='+encoded;
-}
-function showAdmin(){
-  // Pre-fill with current page URL
-  const cur=window.location.href;
-  document.getElementById('qrUrlInp').value=cur;
-  genQR();
-  show('screen-admin');
-  stopLBPoll();
-}
-function goReg(){
-  stopLBPoll(); submitted = false;
-  document.getElementById('teamNameInp').value = '';
-  document.getElementById('memberNamesInp').value = '';
-  document.getElementById('memberIdsInp').value = '';
-  document.getElementById('slotSel').value = '';
-  document.getElementById('parseHint').style.display = 'none';
-  parsedMembers = [];
-  show('screen-register');
-}
-
-/* ─── INIT ─── */
-// Auto-generate QR for current URL on load
-window.addEventListener('load',()=>{
-  const cur=window.location.href;
-  document.getElementById('qrUrlInp').value=cur;
-  document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=0033A0&data='+encodeURIComponent(cur);
-});
-</script>
-</body>
-</html>
+function stopLBPoll(){ clearInterval(lbPollInt); }
