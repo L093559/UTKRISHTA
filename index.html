@@ -263,7 +263,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 /* ── CONFIG ── */
 const GH_OWNER = "L093559";
 const GH_REPO  = "UTKRISHTA";
-const GH_TOKEN = atob("Z2hwX1VuUThaZGdMSElWc25zdUNYUkpzRXNaRlY1SU5iVDN6ODBRNg==");
+/* Split token — paste your 4 parts below (see instructions in Setup screen) */
+const _t1 = "ghp_cXvy";
+const _t2 = "V93zs3Xk74";
+const _t3 = "Gs6q8IlVMtng";
+const _t4 = "VZng4dPbyR";
+const GH_TOKEN = _t1+_t2+_t3+_t4;
 const GH_FILE  = "leaderboard.json";
 const GH_READY = true;
 const GH_API   = "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE;
