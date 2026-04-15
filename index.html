@@ -111,6 +111,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .lb-bottom{display:flex;gap:10px;margin-top:16px;justify-content:center;flex-wrap:wrap}
 .btn-back{padding:11px 28px;background:#fff;color:var(--blue);border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,.2)}
 .btn-refresh{padding:11px 22px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:11px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-clearall{padding:11px 22px;background:rgba(200,16,46,.15);color:#ffaaaa;border:2px solid rgba(200,16,46,.4);border-radius:11px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-clearall:hover{background:var(--red);color:#fff;border-color:var(--red)}
 .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.6);margin-top:10px}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
@@ -136,6 +138,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .sc-mid{color:var(--amber)}
 .sc-low{color:var(--red)}
 </style>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -266,6 +270,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     <div class="lb-bottom">
       <button class="btn-back" onclick="goReg()">&#8592; Back</button>
       <button class="btn-refresh" onclick="loadLB();renderLB()">&#8635; Refresh</button>
+      <button class="btn-clearall" onclick="clearAllLB()">&#128465; Clear All</button>
     </div>
   </div>
 </div>
@@ -285,14 +290,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
       Scan to open the quiz on any phone &mdash; no app or Claude account needed
     </div>
     <div class="setup-box">
-      <strong>How to host this quiz for free (anyone can scan):</strong><br><br>
-      1. Go to <a href="https://github.com" target="_blank">github.com</a> &rarr; sign in &rarr; create a new repository<br>
-      2. Upload <code>utkrishta_quiz.html</code> and rename it to <code>index.html</code><br>
-      3. Go to Settings &rarr; Pages &rarr; Deploy from branch (main)<br>
-      4. Your URL will be <code>https://yourname.github.io/reponame/</code><br>
-      5. Paste that URL above and click <strong>Generate</strong> for your QR code<br><br>
-      <strong>For shared leaderboard across phones:</strong><br>
-      Open the hosted link on ALL phones &rarr; all scores save to the same browser storage on the hosted site. <em>For multi-device sharing, each person should use the same hosted URL.</em>
+      <strong>Step 1 — Create a free Firebase project</strong><br>
+      Go to <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → click <strong>Add project</strong> → give it any name → click through (disable Analytics is fine) → Create project.<br><br>
+      <strong>Step 2 — Create a Realtime Database</strong><br>
+      In your project: left sidebar → <strong>Build → Realtime Database</strong> → Create database → choose any location → start in <strong>Test mode</strong> → Enable.<br><br>
+      <strong>Step 3 — Get your config</strong><br>
+      Left sidebar → Project settings (gear icon) → scroll to <strong>Your apps</strong> → click <strong>&lt;/&gt; Web</strong> → register app (any nickname) → copy the <code>firebaseConfig</code> object shown.<br><br>
+      <strong>Step 4 — Paste into the quiz file</strong><br>
+      Open <code>index.html</code> in a text editor → find <code>FIREBASE_CONFIG</code> near the top of the script → replace each <code>PASTE_..._HERE</code> value with the real values from your config → save → re-upload to GitHub.<br><br>
+      ✅ Once done, every phone that opens the quiz URL shares the same live leaderboard instantly.
     </div>
     <button class="btn-primary" onclick="goReg()" style="margin-top:16px">&#8592; Back to Quiz</button>
   </div>
@@ -327,6 +333,29 @@ function onMemberChange(){}
 const TOTAL_SECS = 180;
 const Q_COUNT = 15;
 const STORAGE_KEY = "utkrishta_leaderboard_v2";
+
+/* ═══════════════════════════════════════════════════════
+   FIREBASE SETUP — paste your config here after setup
+   Steps shown in QR & Setup screen inside the quiz
+════════════════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey:            "PASTE_API_KEY_HERE",
+  authDomain:        "PASTE_AUTH_DOMAIN_HERE",
+  databaseURL:       "PASTE_DATABASE_URL_HERE",
+  projectId:         "PASTE_PROJECT_ID_HERE",
+  storageBucket:     "PASTE_STORAGE_BUCKET_HERE",
+  messagingSenderId: "PASTE_MESSAGING_SENDER_ID_HERE",
+  appId:             "PASTE_APP_ID_HERE"
+};
+const FB_PATH = "utkrishta_leaderboard";
+const FB_READY = FIREBASE_CONFIG.databaseURL !== "PASTE_DATABASE_URL_HERE" && FIREBASE_CONFIG.databaseURL !== "";
+let fbDB = null;
+if(FB_READY){
+  try{
+    firebase.initializeApp(FIREBASE_CONFIG);
+    fbDB = firebase.database();
+  }catch(e){ console.warn("Firebase init failed:", e); }
+}
 
 /* ─── QUESTION BANK ─── */
 const ALL_Q = [
@@ -464,154 +493,53 @@ function pickQuestions(){
 }
 
 /* ─── SHARED LEADERBOARD (localStorage — same hosted URL = shared device) ─── */
-function loadLB(){
-  try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
+function sortLBData(){
+  lbData.sort((a,b)=>{
+    const slotA=parseInt((a.slot||'').replace(/\D/g,''))||0;
+    const slotB=parseInt((b.slot||'').replace(/\D/g,''))||0;
+    if(slotA!==slotB) return slotA-slotB;
+    return a.timeTaken-b.timeTaken;
+  });
 }
+
+/* ─── FIREBASE LEADERBOARD ─── */
 function saveLB(entry){
-  loadLB();
-  entry.uid = Date.now() + '_' + Math.random().toString(36).slice(2);
-  lbData.push(entry);
-  lbData.sort((a,b)=>{
-    const slotA=parseInt(a.slot.replace(/\D/g,''))||0;
-    const slotB=parseInt(b.slot.replace(/\D/g,''))||0;
-    if(slotA!==slotB) return slotA-slotB;
-    return a.timeTaken-b.timeTaken;
-  });
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
+  if(FB_READY && fbDB){
+    fbDB.ref(FB_PATH).push(entry);
+  } else {
+    // localStorage fallback
+    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
+    entry.uid = Date.now()+'_'+Math.random().toString(36).slice(2);
+    lbData.push(entry);
+    sortLBData();
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
+  }
 }
 
-function startQuiz(){
-  const teamName = document.getElementById('teamNameInp').value.trim();
-  const slot     = document.getElementById('slotSel').value;
-
-  if(!teamName){ alert('Please enter your Team Name.'); return; }
-  if(parsedMembers.length !== 3){ alert('Please enter exactly 3 member names and 3 IDs separated by commas.'); return; }
-  if(!slot){ alert('Please select your slot.'); return; }
-
-  regData = {
-    slot, teamName,
-    memberNames: parsedMembers.map(m=>m.name).join(', '),
-    memberIds:   parsedMembers.map(m=>m.id).join(', ')
-  };
-  questions = pickQuestions();
-  answers = {}; current = 0; timerSec = TOTAL_SECS; submitted = false;
-  startTime = Date.now();
-  renderQ(); renderNav();
-  show('screen-quiz');
-  document.getElementById('timeoutBanner').style.display = 'none';
-  startTimer();
-}
-
-/* ─── TIMER ─── */
-function startTimer(){
-  clearInterval(timerInt);
-  timerInt=setInterval(()=>{timerSec--;updateTimer();if(timerSec<=0){clearInterval(timerInt);onTimeout();}},1000);
-}
-function onTimeout(){document.getElementById('timeoutBanner').style.display='block';finishQuiz(true);}
-function updateTimer(){
-  document.getElementById('timerVal').textContent=fmt(timerSec);
-  const pct=(timerSec/TOTAL_SECS)*100;
-  const bar=document.getElementById('timerBar');
-  bar.style.width=pct+'%';
-  const col=timerSec>60?'#16A34A':timerSec>30?'#D97706':'#C8102E';
-  bar.style.background=col;
-  document.getElementById('timerVal').style.color=col;
-}
-
-/* ─── QUIZ RENDER ─── */
-function renderQ(){
-  const q=questions[current];
-  document.getElementById('qNum').textContent='Question '+(current+1)+' of '+questions.length;
-  document.getElementById('qDone').textContent=Object.keys(answers).length+' answered';
-  document.getElementById('progFill').style.width=((current/questions.length)*100)+'%';
-  document.getElementById('qSrc').textContent=q.s;
-  document.getElementById('qText').textContent=q.q;
-  const c=document.getElementById('opts');c.innerHTML='';
-  q.o.forEach((opt,i)=>{
-    const b=document.createElement('button');
-    b.className='opt-btn'+(answers[current]===i?' selected':'');
-    b.innerHTML='<span class="opt-letter">'+['A','B','C','D'][i]+'.</span> '+esc(opt);
-    b.onclick=()=>{answers[current]=i;renderQ();renderNav();};
-    c.appendChild(b);
-  });
-  document.getElementById('btnPrev').disabled=(current===0);
-  const bn=document.getElementById('btnNext');
-  if(current===questions.length-1){bn.textContent='Finish Quiz';bn.className='btn-finish';bn.onclick=()=>confirmSubmit();}
-  else{bn.textContent='Next →';bn.className='btn-next';bn.onclick=()=>navigate(1);}
-}
-function navigate(d){current=Math.max(0,Math.min(questions.length-1,current+d));renderQ();}
-function renderNav(){
-  const g=document.getElementById('navGrid');g.innerHTML='';
-  questions.forEach((_,i)=>{
-    const b=document.createElement('button');
-    b.className='nav-dot'+(i===current?' cur':answers[i]!==undefined?' ans':'');
-    b.textContent=i+1;
-    b.onclick=()=>{current=i;renderQ();renderNav();};
-    g.appendChild(b);
-  });
-}
-function confirmSubmit(){
-  const u=questions.length-Object.keys(answers).length;
-  if(u>0&&!confirm(u+' question(s) unanswered. Submit anyway?'))return;
-  finishQuiz();
-}
-
-/* ─── FINISH ─── */
-function finishQuiz(timedOut=false){
-  if(submitted)return;submitted=true;
-  clearInterval(timerInt);
-  const elapsed=Math.round((Date.now()-startTime)/1000);
-  let score=0;
-  questions.forEach((q,i)=>{if(answers[i]===q.a)score++;});
-  const pct=Math.round((score/questions.length)*100);
-  const mins=Math.floor(elapsed/60);const secs=elapsed%60;
-  const timeStr=mins+'m '+(secs<10?'0':'')+secs+'s';
-  const entry={teamName:regData.teamName,slot:regData.slot,memberName:regData.memberName,score,total:questions.length,timeTaken:elapsed,timeStr,pct,timestamp:Date.now()};
-  saveLB(entry);
-  showResult(score,pct,elapsed,timeStr,timedOut);
-}
-
-/* ─── RESULT SCREEN ─── */
-function showResult(score,pct,elapsed,timeStr,timedOut){
-  document.getElementById('resEmoji').textContent=pct>=80?'🎉':pct>=60?'👍':'💪';
-  document.getElementById('resName').textContent=regData.memberName;
-  document.getElementById('resTeam').textContent=regData.teamName+' · '+regData.slot;
-  const sv=document.getElementById('resScore');
-  sv.textContent=score+'/'+questions.length;
-  sv.style.color=pct>=80?'#16A34A':pct>=60?'#D97706':'#C8102E';
-  document.getElementById('resPct').textContent=pct+'% correct';
-  document.getElementById('resTime').textContent=timeStr+(timedOut?' ⏰':'');
-  const rl=document.getElementById('reviewList');rl.innerHTML='';
-  questions.forEach((q,i)=>{
-    const ua=answers[i];const ok=ua===q.a;
-    const d=document.createElement('div');d.className='review-item';
-    d.innerHTML='<div class="review-q">Q'+(i+1)+'. '+esc(q.q.substring(0,80))+(q.q.length>80?'…':'')+'</div>'+
-      (!ok&&ua!==undefined?'<div class="review-wrong">✗ '+esc(q.o[ua])+'</div>':'')+
-      (!ok&&ua===undefined?'<div class="review-wrong">✗ Not answered</div>':'')+
-      '<div class="review-correct">✓ '+esc(q.o[q.a])+'</div>';
-    rl.appendChild(d);
-  });
-  show('screen-result');
-}
-
-/* ─── LEADERBOARD ─── */
-function deleteEntry(uid){
+function deleteEntry(key){
   if(!confirm('Delete this team from the leaderboard?')) return;
-  loadLB();
-  lbData = lbData.filter(e => e.uid !== uid);
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(lbData)); }catch{}
-  renderLB();
+  if(FB_READY && fbDB){
+    fbDB.ref(FB_PATH+'/'+key).remove();
+  } else {
+    lbData = lbData.filter(e=>e._key!==key && e.uid!==key);
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
+    renderLBFromData();
+  }
 }
 
-function renderLB(){
-  loadLB();
-  // Always sort correctly regardless of storage order
-  lbData.sort((a,b)=>{
-    const slotA=parseInt(a.slot.replace(/\D/g,''))||0;
-    const slotB=parseInt(b.slot.replace(/\D/g,''))||0;
-    if(slotA!==slotB) return slotA-slotB;
-    return a.timeTaken-b.timeTaken;
-  });
+function clearAllLB(){
+  if(!confirm('Clear the ENTIRE leaderboard? This cannot be undone.')) return;
+  if(FB_READY && fbDB){
+    fbDB.ref(FB_PATH).remove();
+  } else {
+    lbData=[];
+    try{localStorage.removeItem(STORAGE_KEY);}catch{}
+    renderLBFromData();
+  }
+}
+
+function renderLBFromData(){
+  sortLBData();
   const body=document.getElementById('lbBody');
   body.innerHTML='';
   if(!lbData.length){
@@ -627,19 +555,54 @@ function renderLB(){
       :'<div class="lb-rank-num">'+(i+1)+'</div>';
     const sc=Math.round((e.score/e.total)*100);
     const scCls=sc>=80?'lb-score sc-high':sc>=60?'lb-score sc-mid':'lb-score sc-low';
-    const safeUid = String(e.uid || i).replace(/'/g,"\\'");
+    const key=String(e._key||e.uid||i).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     d.innerHTML=rankEl+
       '<div class="lb-team">'+esc(e.teamName)+'</div>'+
       '<div class="lb-slot">'+esc(e.slot)+'</div>'+
       '<div class="'+scCls+'">'+e.score+'/'+e.total+'</div>'+
       '<div class="lb-time">'+esc(e.timeStr)+'</div>'+
-      '<div><button class="lb-del" title="Delete entry" onclick="deleteEntry(\''+safeUid+'\')">&#128465;</button></div>';
+      '<div><button class="lb-del" title="Delete" onclick="deleteEntry(\''+key+'\')">&#128465;</button></div>';
     body.appendChild(d);
   });
 }
-function showLeaderboard(){renderLB();show('screen-leaderboard');startLBPoll();}
-function startLBPoll(){clearInterval(lbPoll);lbPoll=setInterval(()=>{renderLB();},10000);}
-function stopLBPoll(){clearInterval(lbPoll);}
+
+function renderLB(){
+  if(!FB_READY || !fbDB){
+    // localStorage fallback — one-time read
+    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
+    renderLBFromData();
+  }
+  // Firebase: handled by real-time listener in showLeaderboard()
+}
+
+let lbListener=null;
+function showLeaderboard(){
+  show('screen-leaderboard');
+  if(FB_READY && fbDB){
+    document.getElementById('lbBody').innerHTML='<div class="lb-empty">&#9203; Loading…</div>';
+    // Detach any previous listener
+    if(lbListener) fbDB.ref(FB_PATH).off('value', lbListener);
+    lbListener = fbDB.ref(FB_PATH).on('value', snap=>{
+      lbData=[];
+      snap.forEach(child=>{ lbData.push({...child.val(), _key:child.key}); });
+      renderLBFromData();
+    });
+  } else {
+    // localStorage fallback
+    try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{lbData=[];}
+    renderLBFromData();
+    // show warning
+    const body=document.getElementById('lbBody');
+    const warn=document.createElement('div');
+    warn.style.cssText='padding:10px 18px;font-size:12px;color:#D97706;background:#FFFBEB;border-top:1px solid #FDE68A;';
+    warn.textContent='⚠ Firebase not configured — leaderboard is device-only. See QR & Setup screen.';
+    body.appendChild(warn);
+  }
+}
+
+function stopLBPoll(){
+  if(lbListener && fbDB){ fbDB.ref(FB_PATH).off('value', lbListener); lbListener=null; }
+}
 
 /* ─── ADMIN / QR ─── */
 function genQR(){
