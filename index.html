@@ -119,8 +119,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .setup-box{background:#F9FAFB;border-radius:10px;padding:14px;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6}
 .setup-box strong{color:var(--text)}
 .setup-box code{background:#E5E7EB;padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace}
-.lb-del{background:none;border:none;cursor:pointer;color:#E5E7EB;font-size:16px;padding:2px 6px;border-radius:6px;transition:color .15s,background .15s;text-align:center}
-.lb-del:hover{color:var(--red);background:#FEF2F2}
 .sc-high{color:var(--green)}.sc-mid{color:var(--amber)}.sc-low{color:var(--red)}
 </style>
 </head>
@@ -233,9 +231,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     <div class="lb-bottom">
       <button class="btn-back" onclick="goReg()">&#8592; Back</button>
       <button class="btn-refresh" onclick="fetchAndRenderLB()">&#8635; Refresh</button>
-      <span id="lbAdminBtns" style="display:none;gap:10px">
-        <button class="btn-clearall" onclick="clearAllLB()">&#128465; Clear All</button>
-      </span>
     </div>
   </div>
 </div>
@@ -461,19 +456,7 @@ async function saveLB(entry){
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
   }
 }
-async function deleteEntry(uid){
-  if(!confirm("Delete this team from the leaderboard?"))return;
-  if(isGHReady()){
-    document.getElementById("lbBody").innerHTML='<div class="lb-empty">Deleting...</div>';
-    const current=await ghGet()||[];
-    const updated=current.filter(e=>e.uid!==uid);
-    await ghSet(updated);lbData=updated;renderLBFromData();
-  }else{
-    lbData=lbData.filter(e=>e.uid!==uid);
-    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(lbData));}catch{}
-    renderLBFromData();
-  }
-}
+
 async function clearAllLB(){
   if(!confirm("Clear the ENTIRE leaderboard? This cannot be undone."))return;
   if(isGHReady()){await ghSet([]);lbData=[];renderLBFromData();}
@@ -515,11 +498,7 @@ async function fetchAndRenderLB(){
 }
 function showLeaderboard(){
   show("screen-leaderboard");
-  document.getElementById("lbBody").innerHTML='<div class="lb-empty">Loading...</div>';
-  // Show admin buttons only for organiser (token present)
-  const adminBtns=document.getElementById('lbAdminBtns');
-  if(adminBtns) adminBtns.style.display=isGHReady()?'inline-flex':'none';
-  fetchAndRenderLB();
+  document.getElementById("lbBody").innerHTML='<div class="lb-empty">Loading...</div>';  fetchAndRenderLB();
   clearInterval(lbPollInt);
   lbPollInt=setInterval(fetchAndRenderLB,15000);
 }
