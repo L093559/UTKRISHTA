@@ -249,12 +249,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:4px">Scan to open on any phone &mdash; no app needed</div>
     <div class="setup-box">
-      <strong>Step 1 &mdash; Create leaderboard.json in your repo</strong><br>
-      GitHub repo &rarr; Add file &rarr; Create new file &rarr; name: <code>leaderboard.json</code> &rarr; content: <code>{"leaderboard":[]}</code> &rarr; Commit.<br><br>
-      <strong>Step 2 &mdash; Create a Personal Access Token</strong><br>
-      GitHub &rarr; Profile picture &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic) &rarr; Generate new token (classic) &rarr; tick <strong>public_repo</strong> &rarr; Generate &rarr; copy token.<br><br>
-      <strong>Step 3 &mdash; Paste 3 values into index.html</strong><br>
-      Find <code>GH_OWNER</code>, <code>GH_REPO</code>, <code>GH_TOKEN</code> near top of script and replace the placeholder values. Keep the quotes. Commit &rarr; done!
+      <strong>How the token works (read this once)</strong><br><br>
+      The token is embedded in the QR code URL &mdash; it is <em>never</em> written into the code file, so GitHub cannot detect or revoke it.<br><br>
+      <strong>Step 1</strong> &mdash; Make sure <code>leaderboard.json</code> exists in your repo with content: <code>{"leaderboard":[]}</code><br><br>
+      <strong>Step 2</strong> &mdash; Paste your GitHub PAT in the field below.<br><br>
+      <strong>Step 3</strong> &mdash; Click <strong>Generate QR</strong>. The token is baked into the QR URL.<br><br>
+      <strong>Step 4</strong> &mdash; All participants scan <em>this QR</em>. Their phones load the token from the URL and scores sync live. &check;
+    </div>
+    <div style="margin-top:12px">
+      <label style="display:block;font-size:12px;font-weight:700;color:#1A1A2E;margin-bottom:5px">&#128274; Your GitHub PAT (embedded in QR only &mdash; never in code)</label>
+      <input id="ghTokenInp" type="password" placeholder="ghp_yourtoken..." style="width:100%;padding:9px 12px;border:2px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:monospace;outline:none;margin-bottom:4px" />
+      <div style="font-size:10px;color:#6B7280">Token is added to the QR URL as <code>?t=token</code> &mdash; not stored anywhere in the file</div>
     </div>
     <button class="btn-primary" onclick="goReg()" style="margin-top:16px">&#8592; Back to Quiz</button>
   </div>
@@ -263,16 +268,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 /* ── CONFIG ── */
 const GH_OWNER = "L093559";
 const GH_REPO  = "UTKRISHTA";
-/* Split token — paste your 4 parts below (see instructions in Setup screen) */
-const _t1 = "ghp_cXvy";
-const _t2 = "V93zs3Xk74";
-const _t3 = "Gs6q8IlVMtng";
-const _t4 = "VZng4dPbyR";
-const GH_TOKEN = _t1+_t2+_t3+_t4;
 const GH_FILE  = "leaderboard.json";
-const GH_READY = true;
 const GH_API   = "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE;
-const GH_HEADS = {"Authorization":"token "+GH_TOKEN,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"};
+
+/* Token comes from URL ?t=TOKEN — never stored in code */
+function getGHToken(){
+  const p=new URLSearchParams(window.location.search).get('t');
+  if(p&&p.length>10){sessionStorage.setItem('ughl',p);return p;}
+  return sessionStorage.getItem('ughl')||'';
+}
+function ghHeaders(){return{"Authorization":"token "+getGHToken(),"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"};}
+function isGHReady(){return getGHToken().length>10;}
 const STORAGE_KEY = "utkrishta_lb_v3";
 const TOTAL_SECS = 180;
 const Q_COUNT = 15;
@@ -416,7 +422,7 @@ function pickQuestions(){
 /* ── GITHUB LEADERBOARD ── */
 async function ghGet(){
   try{
-    const r=await fetch(GH_API+"?t="+Date.now(),{headers:GH_HEADS});
+    const r=await fetch(GH_API+"?t="+Date.now(),{headers:ghHeaders()});
     if(!r.ok)return null;
     const j=await r.json();
     const decoded=decodeURIComponent(escape(atob(j.content.replace(/\n/g,""))));
@@ -428,18 +434,18 @@ async function ghGet(){
 async function ghSet(arr){
   try{
     if(!ghFileSha){
-      const r=await fetch(GH_API,{headers:GH_HEADS});
+      const r=await fetch(GH_API,{headers:ghHeaders()});
       if(r.ok){const j=await r.json();ghFileSha=j.sha;}
     }
     const body={message:"leaderboard update",content:btoa(unescape(encodeURIComponent(JSON.stringify({leaderboard:arr})))),sha:ghFileSha};
-    const r=await fetch(GH_API,{method:"PUT",headers:GH_HEADS,body:JSON.stringify(body)});
+    const r=await fetch(GH_API,{method:"PUT",headers:ghHeaders(),body:JSON.stringify(body)});
     if(r.ok){const j=await r.json();ghFileSha=j.content.sha;}
     else{console.warn("GH write failed",r.status);}
   }catch(e){console.warn("GH write error",e);}
 }
 async function saveLB(entry){
   entry.uid=Date.now()+"_"+Math.random().toString(36).slice(2);
-  if(GH_READY){
+  if(isGHReady()){
     const current=await ghGet()||[];
     current.push(entry);
     await ghSet(current);
@@ -451,7 +457,7 @@ async function saveLB(entry){
 }
 async function deleteEntry(uid){
   if(!confirm("Delete this team from the leaderboard?"))return;
-  if(GH_READY){
+  if(isGHReady()){
     document.getElementById("lbBody").innerHTML='<div class="lb-empty">Deleting...</div>';
     const current=await ghGet()||[];
     const updated=current.filter(e=>e.uid!==uid);
@@ -464,7 +470,7 @@ async function deleteEntry(uid){
 }
 async function clearAllLB(){
   if(!confirm("Clear the ENTIRE leaderboard? This cannot be undone."))return;
-  if(GH_READY){await ghSet([]);lbData=[];renderLBFromData();}
+  if(isGHReady()){await ghSet([]);lbData=[];renderLBFromData();}
   else{lbData=[];try{localStorage.removeItem(STORAGE_KEY);}catch{}renderLBFromData();}
 }
 function renderLBFromData(){
@@ -489,10 +495,10 @@ function renderLBFromData(){
   });
 }
 async function fetchAndRenderLB(){
-  if(GH_READY){
+  if(isGHReady()){
     const data=await ghGet();
     if(data!==null){lbData=data;renderLBFromData();}
-    else{document.getElementById("lbBody").innerHTML='<div class="lb-empty">Could not load. Check GitHub credentials.</div>';}
+    else{document.getElementById("lbBody").innerHTML='<div class="lb-empty">Could not load. Open via QR code with token, or paste your GitHub PAT in QR & Setup screen.</div>';}
   }else{
     try{lbData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}catch{lbData=[];}
     renderLBFromData();
@@ -613,8 +619,17 @@ function showResult(score,pct,elapsed,timeStr,timedOut){
 
 /* ── ADMIN / QR ── */
 function genQR(){
-  const url=document.getElementById('qrUrlInp').value.trim();
+  let url=document.getElementById('qrUrlInp').value.trim();
   if(!url){alert('Please enter a URL first.');return;}
+  const tok=(document.getElementById('ghTokenInp')||{}).value||'';
+  if(tok.length>10){
+    // embed token in URL so participants get it on scan
+    const u=new URL(url.includes('?')?url:url+'?x=1');
+    u.searchParams.set('t',tok);
+    url=u.href;
+    // also save to this session
+    sessionStorage.setItem('ughl',tok);
+  }
   document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=0033A0&data='+encodeURIComponent(url);
 }
 function showAdmin(){
