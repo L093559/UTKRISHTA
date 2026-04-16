@@ -86,9 +86,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .lb-header h1{font-size:26px;font-weight:900;margin:6px 0 3px}
 .lb-header p{opacity:.75;font-size:13px}
 .lb-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.4)}
-.lb-thead{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px;padding:11px 18px;background:#F9FAFB;border-bottom:1px solid #E5E7EB;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.lb-thead{display:grid;grid-template-columns:46px 1fr 90px 90px;padding:11px 18px;background:#F9FAFB;border-bottom:1px solid #E5E7EB;font-size:11px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.5px}
 .lb-thead div:nth-child(4),.lb-thead div:nth-child(5){text-align:center}
-.lb-row{display:grid;grid-template-columns:46px 1fr 1fr 90px 90px;padding:13px 18px;border-bottom:1px solid #F3F4F6;align-items:center}
+.lb-row{display:grid;grid-template-columns:46px 1fr 90px 90px;padding:13px 18px;border-bottom:1px solid #F3F4F6;align-items:center}
 .lb-row:last-child{border-bottom:none}
 .lb-row.gold{background:linear-gradient(90deg,#FFFBEB,#fff)}
 .lb-row.silver{background:linear-gradient(90deg,#F8FAFC,#fff)}
@@ -96,7 +96,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
 .lb-rank-medal{font-size:22px;line-height:1}
 .lb-rank-num{font-size:14px;font-weight:700;color:var(--muted)}
 .lb-team{font-weight:700;color:var(--text);font-size:14px}
-.lb-slot{color:var(--muted);font-size:13px}
+
 .lb-score{text-align:center;font-weight:900;font-size:16px}
 .lb-time{text-align:center;font-size:13px;font-weight:600;color:var(--blue)}
 .lb-empty{padding:40px;text-align:center;color:var(--muted);font-size:14px}
@@ -142,15 +142,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
       <label>&#129499; Member IDs <span style="font-weight:400;color:var(--muted)">(comma-separated, 3 IDs)</span></label>
       <input id="memberIdsInp" type="text" placeholder="e.g. LBB001, LBB002, LBB003" oninput="parseMembers()" onchange="parseMembers()" onblur="parseMembers()" />
     </div>
-    <div class="field">
-      <label>&#128336; Select Slot</label>
-      <select id="slotSel">
-        <option value="">-- Choose your slot --</option>
-        <option value="Slot 1">Slot 1</option>
-        <option value="Slot 2">Slot 2</option>
-        <option value="Slot 3">Slot 3</option>
-      </select>
-    </div>
+
     <div id="parseHint" style="font-size:11px;color:var(--amber);margin-bottom:8px;display:none">&#9888; Enter exactly 3 names and 3 IDs separated by commas.</div>
     <button class="btn-primary" onclick="startQuiz()">&#128640; Start Quiz</button>
     <button class="btn-outline" onclick="showLeaderboard()">&#127942; View Leaderboard</button>
@@ -222,7 +214,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     </div>
     <div class="lb-card">
       <div class="lb-thead">
-        <div>#</div><div>Team Name</div><div>Slot</div><div>Score</div><div>Time</div>
+        <div>#</div><div>Team Name</div><div>Score</div><div>Time</div>
       </div>
       <div id="lbBody"></div>
     </div>
@@ -287,12 +279,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function fmt(s){const m=Math.floor(s/60),sc=s%60;return m+':'+(sc<10?'0':'')+sc;}
-function sortLBData(){lbData.sort((a,b)=>{
-  const sa=parseInt((a.slot||'').replace(/\D/g,''))||0,sb=parseInt((b.slot||'').replace(/\D/g,''))||0;
-  if(sa!==sb) return sa-sb;
-  if(b.score!==a.score) return b.score-a.score;
-  return a.timeTaken-b.timeTaken;
-});}
+function sortLBData(){lbData.sort((a,b)=>b.score!==a.score?b.score-a.score:a.timeTaken-b.timeTaken);}
 
 /* ── PARSE MEMBERS ── */
 function parseMembers(){
@@ -473,7 +460,6 @@ function renderLBFromData(){
     const scCls=sc>=80?"lb-score sc-high":sc>=60?"lb-score sc-mid":"lb-score sc-low";
     d.innerHTML=rankEl+
       '<div class="lb-team">'+esc(e.teamName)+"</div>"+
-      '<div class="lb-slot">'+esc(e.slot)+"</div>"+
       '<div class="'+scCls+'">'+e.score+"/"+e.total+"</div>"+
       '<div class="lb-time">'+esc(e.timeStr)+"</div>";
     body.appendChild(d);
@@ -506,10 +492,9 @@ function stopLBPoll(){clearInterval(lbPollInt);}
 async function startQuiz(){
   parseMembers();
   const teamName=document.getElementById('teamNameInp').value.trim();
-  const slot=document.getElementById('slotSel').value;
+  const slot='General';
   if(!teamName){alert('Please enter your Team Name.');return;}
   if(parsedMembers.length!==3){alert('Need exactly 3 member names and 3 IDs.\nYou currently have: '+parsedMembers.length+' valid member(s).\nCheck your commas and try again.');return;}
-  if(!slot){alert('Please select your slot.');return;}
   // Check team name is unique in the leaderboard
   const btn=document.querySelector('.btn-primary');
   if(btn){btn.textContent='Checking...';btn.disabled=true;}
@@ -638,7 +623,6 @@ function goReg(){
   document.getElementById('teamNameInp').value='';
   document.getElementById('memberNamesInp').value='';
   document.getElementById('memberIdsInp').value='';
-  document.getElementById('slotSel').value='';
   document.getElementById('parseHint').style.display='none';
   parsedMembers=[];show('screen-register');
 }
