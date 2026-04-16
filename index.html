@@ -154,7 +154,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4FA;min-height:1
     <div id="parseHint" style="font-size:11px;color:var(--amber);margin-bottom:8px;display:none">&#9888; Enter exactly 3 names and 3 IDs separated by commas.</div>
     <button class="btn-primary" onclick="startQuiz()">&#128640; Start Quiz</button>
     <button class="btn-outline" onclick="showLeaderboard()">&#127942; View Leaderboard</button>
-    <button class="btn-outline" onclick="showAdmin()" style="margin-top:6px;font-size:11px;padding:7px;color:#bbb;border-color:#eee">&#128247; QR Code &amp; Setup</button>
     <div class="reg-footer">15 questions &nbsp;&#183;&nbsp; 3-minute timer &nbsp;&#183;&nbsp; Live leaderboard</div>
   </div>
 </div>
@@ -504,13 +503,25 @@ function showLeaderboard(){
 function stopLBPoll(){clearInterval(lbPollInt);}
 
 /* ── QUIZ ── */
-function startQuiz(){
+async function startQuiz(){
   parseMembers();
   const teamName=document.getElementById('teamNameInp').value.trim();
   const slot=document.getElementById('slotSel').value;
   if(!teamName){alert('Please enter your Team Name.');return;}
   if(parsedMembers.length!==3){alert('Need exactly 3 member names and 3 IDs.\nYou currently have: '+parsedMembers.length+' valid member(s).\nCheck your commas and try again.');return;}
   if(!slot){alert('Please select your slot.');return;}
+  // Check team name is unique in the leaderboard
+  const btn=document.querySelector('.btn-primary');
+  if(btn){btn.textContent='Checking...';btn.disabled=true;}
+  let existing=[];
+  if(isGHReady()){existing=await ghGet()||[];}
+  else{try{existing=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{existing=[];}}
+  if(btn){btn.innerHTML='&#128640; Start Quiz';btn.disabled=false;}
+  const duplicate=existing.find(e=>e.teamName.trim().toLowerCase()===teamName.toLowerCase());
+  if(duplicate){
+    alert('Team name "'+teamName+'" has already played!\nPlease use a different team name.');
+    return;
+  }
   regData={slot,teamName,memberNames:parsedMembers.map(m=>m.name).join(', '),memberIds:parsedMembers.map(m=>m.id).join(', ')};
   questions=pickQuestions();answers={};current=0;timerSec=TOTAL_SECS;submitted=false;
   startTime=Date.now();renderQ();renderNav();
